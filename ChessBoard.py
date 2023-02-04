@@ -57,7 +57,7 @@ class ChessBoard:
              ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
              ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']]
     
-    def board(self):        
+    def draw_board(self):        
         for row in range(self.rxc):
             for col in range(self.rxc):
                 color = self.colors[((row+col) % 2)]
@@ -70,7 +70,7 @@ class ChessBoard:
             self.Pieces[piece] = pygame.transform.scale(pygame.image.load(
                 self.PATH + piece + ".png"), (self.squares, self.squares))
 
-    def draw_piece(self):
+    def draw_pieces(self):
         for row in range(self.rxc):
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
@@ -199,9 +199,9 @@ class ChessBoard:
 
     def RUN_ALL(self):
         
-        self.board()
+        self.draw_board()
         self.import_pieces()
-        self.draw_piece()
+        self.draw_pieces()
 
         while True:
         # game loop
@@ -219,7 +219,10 @@ class ChessBoard:
                     self.clicks_clicked, self.clicks_stored = self.get_clicks((x,y), self.clicks_stored, self.clicks_clicked)
                    
                     if len(self.clicks_stored) == 2:
-                         
+                        '''if the length of clicks stored == 2, 
+                            then we need to check what the clicks are
+                            and determine the legality of this move'''
+
                         curr_piece, nxt_piece = self.two_pieces(self.clicks_stored, self.clicks_clicked)
 
                          
@@ -231,8 +234,11 @@ class ChessBoard:
                         elif self.move_color[0] != curr_piece.color:
                             self.move_color.clear()
                             self.move_color.append(curr_piece.color)
+
+                            '''instead of calling ChessRules, just use the Piece.move_is_legal() function'''
                             rlz = ChessRules(curr_piece, nxt_piece)
 
+                            #if move is legal, then check for checks 
                             if rlz.is_legal(self.board_arr) == True:
                                 rlz.in_check(self.board_arr)
                                 if rlz.self_check(curr_piece.pos[0],curr_piece.pos[1], self.board_arr):                                
