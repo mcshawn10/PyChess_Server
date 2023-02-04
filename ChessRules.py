@@ -109,7 +109,7 @@ class ChessRules():
             if board_arr[nr][nc] != '.':
                 return False
             else:
-                return self.is_clear_diag((nr,nc),g)
+                return self.is_clear_diag((nr,nc),g, board_arr)
 
         elif c[0]-g[0]<0 and c[1]-g[1]>0: # SW
             
@@ -118,7 +118,7 @@ class ChessRules():
             if board_arr[nr][nc] != '.':
                 return False
             else:
-                return self.is_clear_diag((nr,nc),g)
+                return self.is_clear_diag((nr,nc),g, board_arr)
 
     def is_clear_lin(self,c , g, board_arr):
         

@@ -5,12 +5,8 @@ from ChessRules import ChessRules
 from Piece import *
 
 
-
-
 pygame.init()
 clock = pygame.time.Clock()
-
-
 
 
 w_lin = ['wR', 'wQ']
@@ -20,16 +16,7 @@ b_lin = ['bR', 'bQ']
 b_diag = ['bB', 'bQ']
 
 
-
-
-
-
 #screen = pygame.display.set_mode((512, 512))  # Setting the screen size
-
-
-
-
-
 
 class ChessBoard:
     
@@ -98,13 +85,13 @@ class ChessBoard:
         selected_piece = self.board_arr[row_current][col_current]
 
         #highlight piece
-        
-        
-
+    
         if self.board_arr[row_next][col_next] in self.avail_white:
             self.avail_white.remove(self.board_arr[row_next][col_next])
         if self.board_arr[row_next][col_next] in self.avail_black:
-            self.avail_black.remove(self.b[row_next][col_next])
+            self.avail_black.remove(self.board_arr[row_next][col_next])
+
+
         self.board_arr[row_next][col_next] = '.'
         #self.update()
         self.board_arr[row_next][col_next] = selected_piece
@@ -115,8 +102,10 @@ class ChessBoard:
 
         self.clicks_clicked = ()
         self.clicks_stored.clear()
+
+
             
-    def what_color(self,p):
+    def return_color(self,p):
         
         if p == '.':
             return "blank"
@@ -148,13 +137,13 @@ class ChessBoard:
         row_c, col_c = cs[0]
         selected_piece = self.board_arr[row_c][col_c]
         name1 = self.get_name(selected_piece)  
-        curr_color = self.what_color(selected_piece)
+        curr_color = self.return_color(selected_piece)
         cp = Piece(cs[0], name1, curr_color)
 
         row_n, col_n = cs[1] 
         next_piece = self.board_arr[row_n][col_n]
         name2 = self.get_name(next_piece)
-        next_color = self.what_color(next_piece)
+        next_color = self.return_color(next_piece)
         np = Piece(cs[1], name2, next_color)
         
         return cp, np
@@ -192,7 +181,7 @@ class ChessBoard:
         r,c = pos[0],pos[1]
         piece = self.board_arr[r][c]
         name = self.get_name(piece)
-        clr = self.what_color(piece)
+        clr = self.return_color(piece)
         return self.Piece(pos,name,clr)
 
     def highlight_square(self, pos):
