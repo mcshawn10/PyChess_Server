@@ -9,6 +9,7 @@ class Piece:
         self.color = color
         self.board_arr = board_arr
         
+        
 class Empty(Piece):
     def __init__(self, pos, name, color, board_arr):
         self.pos = pos
@@ -19,8 +20,8 @@ class Empty(Piece):
 
 class Pawn(Piece):
 
-    def __init__(self, pos, name, color,board_arr):
-        super.__init__(pos, name, color,board_arr)
+    def __init__(self, pos, name, color, board_arr):
+        super.__init__(pos, name, color, board_arr)
 
     def move_is_legal(self, next_pos):
         if (self.pos[0] == 6) and (next_pos[0] == 4) and (self.pos[1]==next_pos[1]):
@@ -46,7 +47,7 @@ class Rook(Piece):
             return is_clear_lin(self.pos, next_pos, self.board_arr)
                 
     
-    def get_legal_moves(self) -> list:
+    def get_legal_moves(self):
         pass
 
 class Bishop(Piece):
@@ -60,7 +61,7 @@ class Bishop(Piece):
             return is_clear_diag(self.pos, next_pos, self.board_arr)
                 
 
-    def get_legal_moves(self) -> list:
+    def get_legal_moves(self):
         pass
 
 class Knight(Piece):
@@ -77,7 +78,7 @@ class Knight(Piece):
             return True
         else: return False
 
-    def get_legal_moves(self) -> list:
+    def get_legal_moves(self):
         pass
 
 class King(Piece):
@@ -86,9 +87,8 @@ class King(Piece):
         super.__init__(pos, name, color,board_arr)
     
     def move_is_legal(self, next_pos):
-        if abs(self.pos[0]-next_pos[0])==1 or abs(self.pos[1]-next_pos[1])==1:
-                return True
-        else: return False
+        return abs(self.pos[0]-next_pos[0])==1 or abs(self.pos[1]-next_pos[1])==1
+            
         
     def get_legal_moves(self):
         pass

@@ -76,6 +76,13 @@ def is_clear_lin(c, g, board_arr):
             return is_clear_lin((c[0],nc), g, board_arr)
 
 
+def is_legal(current_piece, next_piece):
+
+    if current_piece.color == next_piece.color: return False
+
+    else: return current_piece.move_is_legal(next_piece.pos)
+
+
 
 if __name__ == "__main__":
     pass

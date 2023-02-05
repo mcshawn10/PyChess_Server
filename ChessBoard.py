@@ -14,7 +14,15 @@ w_diag = ['wB', 'wQ']
 
 b_lin = ['bR', 'bQ']
 b_diag = ['bB', 'bQ']
-
+old_board = [
+             ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
+             ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
+             ['.', '.', '.', '.', '.', '.', '.', '.'],
+             ['.', '.', '.', '.', '.', '.', '.', '.'],
+             ['.', '.', '.', '.', '.', '.', '.', '.'],
+             ['.', '.', '.', '.', '.', '.', '.', '.'],
+             ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
+             ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']]
 
 #screen = pygame.display.set_mode((512, 512))  # Setting the screen size
 
@@ -45,17 +53,47 @@ class ChessBoard:
         self.screen.fill(pygame.Color((255, 228, 181)))  # intitally fills screen to be all tan color
         pygame.display.set_caption("A.I. HW #2")  # title of the pygame window
 
-# needed arrays/tuples
+        # needed arrays/tuples 
+        self.board_arr = [['.' for x in range(self.rxc)] for _ in range(self.rxc)]
 
-        self.board_arr = [
-            ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
-             ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
-             ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']]
+        self.board_arr[0][0] = Rook([0,0], "bR", "black",r"C:\\Python\\WORTHY PROJECTS\\PyChess_Server\\chess_pieces\\bR.png")
+        self.board_arr[0][1] = Knight([0,1], "bN", "black")
+        self.board_arr[0][2] = Bishop([0,2], "bB", "black")
+        self.board_arr[0][3] = Queen([0,3], "bQ", "black")
+        self.board_arr[0][4] = King([0,4], "bK", "black")
+        self.board_arr[0][5] = Bishop([0,5], "bB", "black")
+        self.board_arr[0][6] = Knight([0,6], "bN", "black")
+        self.board_arr[0][7] = Rook([0,7], "bR", "black")
+
+        self.board_arr[1][0] = Pawn([1,0], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,1], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,2], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,3], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,4], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,5], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,6], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,7], "bp", "black")
+
+        self.board_arr[6][0] = Pawn([6,0], "wp", "white")
+        self.board_arr[6][1] = Pawn([6,1], "wp", "white")
+        self.board_arr[6][2] = Pawn([6,2], "wp", "white")
+        self.board_arr[6][3] = Pawn([6,3], "wp", "white")
+        self.board_arr[6][4] = Pawn([6,4], "wp", "white")
+        self.board_arr[6][5] = Pawn([6,5], "wp", "white")
+        self.board_arr[6][6] = Pawn([6,6], "wp", "white")
+        self.board_arr[6][7] = Pawn([6,7], "wp", "white")
+
+        
+        self.board_arr[7][0] = Rook([7,0], "wR", "white")
+        self.board_arr[7][1] = Knight([7,1], "wN", "white")
+        self.board_arr[7][2] = Bishop([7,2], "wB", "white")
+        self.board_arr[7][3] = Queen([7,3], "wQ", "white")
+        self.board_arr[7][4] = King([7,4], "wK", "white")
+        self.board_arr[7][5] = Bishop([7,5], "wB", "white")
+        self.board_arr[7][6] = Knight([7,6], "wN", "white")
+        self.board_arr[7][7] = Rook([7,7], "wR", "white")
+     
+        
     
     def draw_board(self):        
         for row in range(self.rxc):
@@ -74,8 +112,9 @@ class ChessBoard:
         for row in range(self.rxc):
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
+                '''blit piece.image'''
                 if piece != '.':
-                    self.screen.blit(self.Pieces[piece], pygame.Rect(col*self.squares, row*self.squares,
+                    self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                        self.squares, self.squares))
 
     def move_piece(self): #ip_pos is a tuple (row, col)
@@ -132,6 +171,7 @@ class ChessBoard:
             name = "bishop"
         return name   
 
+    ''' I don't like this two_pieces, I'm sure theres a better way to go about this'''
     def two_pieces(self, cs, cc): #returns the two pieces that are interacting
                    
         row_c, col_c = cs[0]
@@ -163,6 +203,7 @@ class ChessBoard:
         for row in range(self.rxc):
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
+                '''more life if piece.name != None, then blit the image'''
                 if piece != '.':
                     self.screen.blit(self.Pieces[piece], pygame.Rect(col*self.squares, row*self.squares,
                                                        self.squares, self.squares))  # draws pieces onto the board
@@ -218,20 +259,24 @@ class ChessBoard:
                     
                     self.clicks_clicked, self.clicks_stored = self.get_clicks((x,y), self.clicks_stored, self.clicks_clicked)
                    
+
+                    '''in reality, the algorithm should first check if the pieces are the same color, if not then move forward'''
+
                     if len(self.clicks_stored) == 2:
                         '''if the length of clicks stored == 2, 
                             then we need to check what the clicks are
                             and determine the legality of this move'''
 
+                        '''returns the two pieces that are clicked'''
                         curr_piece, nxt_piece = self.two_pieces(self.clicks_stored, self.clicks_clicked)
 
-                         
+                        '''if the current move color is equal to the next piece color, continue'''
                         if self.move_color[0] == curr_piece.color:
                             self.clicks_clicked = ()
                             self.clicks_stored.clear()                            
                             continue
-
-                        elif self.move_color[0] != curr_piece.color:
+                        '''if the current color is not the same, then check the move legality details'''
+                        if self.move_color[0] != curr_piece.color:
                             self.move_color.clear()
                             self.move_color.append(curr_piece.color)
 

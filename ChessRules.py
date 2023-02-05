@@ -74,10 +74,9 @@ class ChessRules():
                     return True
             else: return False
     
-    def clear_path(self, p, goal): #goal is a tuple
-        if abs(self.curr.pos[0]-goal[0])==1 or abs(self.curr.pos[1]-self.goal[1])==1:
-            return True
-        else: return False
+    def clear_path(self, goal): #goal is a tuple
+        return abs(self.curr.pos[0]-goal[0])==1 or abs(self.curr.pos[1]-self.goal[1])==1
+            
 
     def is_clear_diag(self, c, g, board_arr):  # positions (r,c) of the current and the goal
         
