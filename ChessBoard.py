@@ -56,42 +56,42 @@ class ChessBoard:
         # needed arrays/tuples 
         self.board_arr = [['.' for x in range(self.rxc)] for _ in range(self.rxc)]
 
-        self.board_arr[0][0] = Rook([0,0], "bR", "black",r"C:\\Python\\WORTHY PROJECTS\\PyChess_Server\\chess_pieces\\bR.png")
-        self.board_arr[0][1] = Knight([0,1], "bN", "black")
-        self.board_arr[0][2] = Bishop([0,2], "bB", "black")
-        self.board_arr[0][3] = Queen([0,3], "bQ", "black")
-        self.board_arr[0][4] = King([0,4], "bK", "black")
-        self.board_arr[0][5] = Bishop([0,5], "bB", "black")
-        self.board_arr[0][6] = Knight([0,6], "bN", "black")
-        self.board_arr[0][7] = Rook([0,7], "bR", "black")
+        self.board_arr[0][0] = Rook([0,0], "bR", "black", self.board_arr)
+        self.board_arr[0][1] = Knight([0,1], "bN", "black", self.board_arr)
+        self.board_arr[0][2] = Bishop([0,2], "bB", "black", self.board_arr)
+        self.board_arr[0][3] = Queen([0,3], "bQ", "black", self.board_arr)
+        self.board_arr[0][4] = King([0,4], "bK", "black", self.board_arr)
+        self.board_arr[0][5] = Bishop([0,5], "bB", "black", self.board_arr)
+        self.board_arr[0][6] = Knight([0,6], "bN", "black", self.board_arr)
+        self.board_arr[0][7] = Rook([0,7], "bR", "black", self.board_arr)
 
-        self.board_arr[1][0] = Pawn([1,0], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,1], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,2], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,3], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,4], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,5], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,6], "bp", "black")
-        self.board_arr[1][0] = Pawn([1,7], "bp", "black")
+        self.board_arr[1][0] = Pawn([1,0], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,1], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,2], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,3], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,4], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,5], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,6], "bp", "black", self.board_arr)
+        self.board_arr[1][0] = Pawn([1,7], "bp", "black", self.board_arr)
 
-        self.board_arr[6][0] = Pawn([6,0], "wp", "white")
-        self.board_arr[6][1] = Pawn([6,1], "wp", "white")
-        self.board_arr[6][2] = Pawn([6,2], "wp", "white")
-        self.board_arr[6][3] = Pawn([6,3], "wp", "white")
-        self.board_arr[6][4] = Pawn([6,4], "wp", "white")
-        self.board_arr[6][5] = Pawn([6,5], "wp", "white")
-        self.board_arr[6][6] = Pawn([6,6], "wp", "white")
-        self.board_arr[6][7] = Pawn([6,7], "wp", "white")
+        self.board_arr[6][0] = Pawn([6,0], "wp", "white", self.board_arr)
+        self.board_arr[6][1] = Pawn([6,1], "wp", "white", self.board_arr)
+        self.board_arr[6][2] = Pawn([6,2], "wp", "white", self.board_arr)
+        self.board_arr[6][3] = Pawn([6,3], "wp", "white", self.board_arr)
+        self.board_arr[6][4] = Pawn([6,4], "wp", "white", self.board_arr)
+        self.board_arr[6][5] = Pawn([6,5], "wp", "white", self.board_arr)
+        self.board_arr[6][6] = Pawn([6,6], "wp", "white", self.board_arr)
+        self.board_arr[6][7] = Pawn([6,7], "wp", "white", self.board_arr)
 
         
-        self.board_arr[7][0] = Rook([7,0], "wR", "white")
-        self.board_arr[7][1] = Knight([7,1], "wN", "white")
-        self.board_arr[7][2] = Bishop([7,2], "wB", "white")
-        self.board_arr[7][3] = Queen([7,3], "wQ", "white")
-        self.board_arr[7][4] = King([7,4], "wK", "white")
-        self.board_arr[7][5] = Bishop([7,5], "wB", "white")
-        self.board_arr[7][6] = Knight([7,6], "wN", "white")
-        self.board_arr[7][7] = Rook([7,7], "wR", "white")
+        self.board_arr[7][0] = Rook([7,0], "wR", "white", self.board_arr)
+        self.board_arr[7][1] = Knight([7,1], "wN", "white", self.board_arr)
+        self.board_arr[7][2] = Bishop([7,2], "wB", "white", self.board_arr)
+        self.board_arr[7][3] = Queen([7,3], "wQ", "white", self.board_arr)
+        self.board_arr[7][4] = King([7,4], "wK", "white", self.board_arr)
+        self.board_arr[7][5] = Bishop([7,5], "wB", "white", self.board_arr)
+        self.board_arr[7][6] = Knight([7,6], "wN", "white", self.board_arr)
+        self.board_arr[7][7] = Rook([7,7], "wR", "white", self.board_arr)
      
         
     
@@ -172,21 +172,21 @@ class ChessBoard:
         return name   
 
     ''' I don't like this two_pieces, I'm sure theres a better way to go about this'''
-    def two_pieces(self, cs, cc): #returns the two pieces that are interacting
+    def return_active_pieces(self, cs): #returns the two pieces that are interacting
                    
         row_c, col_c = cs[0]
         selected_piece = self.board_arr[row_c][col_c]
-        name1 = self.get_name(selected_piece)  
-        curr_color = self.return_color(selected_piece)
-        cp = Piece(cs[0], name1, curr_color)
-
         row_n, col_n = cs[1] 
         next_piece = self.board_arr[row_n][col_n]
-        name2 = self.get_name(next_piece)
-        next_color = self.return_color(next_piece)
-        np = Piece(cs[1], name2, next_color)
         
-        return cp, np
+        if selected_piece == '.':
+            selected_piece = Empty(cs[0], self.board_arr)
+
+        elif next_piece == '.':
+            next_piece = Empty(cs[1], self.board_arr)
+
+    
+        return selected_piece, next_piece
 
     def get_clicks(self, ip_pos, cs, cc):   
         if cc == ip_pos:
@@ -203,16 +203,16 @@ class ChessBoard:
         for row in range(self.rxc):
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
-                '''more life if piece.name != None, then blit the image'''
+                '''more like if piece.name != None, then blit the image'''
                 if piece != '.':
-                    self.screen.blit(self.Pieces[piece], pygame.Rect(col*self.squares, row*self.squares,
+                    self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                        self.squares, self.squares))  # draws pieces onto the board
                 elif piece == '.':
                         color = colors[((row+col) % 2)]
                         pygame.draw.rect(self.screen, color, pygame.Rect(
                     col*self.squares, row*self.squares, self.squares, self.squares))
 
-    def get_pos(self,pos):
+    def get_pos(self, pos):
         x, y = pos
         row = y // self.squares
         col = x // self.squares
@@ -263,12 +263,10 @@ class ChessBoard:
                     '''in reality, the algorithm should first check if the pieces are the same color, if not then move forward'''
 
                     if len(self.clicks_stored) == 2:
-                        '''if the length of clicks stored == 2, 
-                            then we need to check what the clicks are
-                            and determine the legality of this move'''
+                        
 
                         '''returns the two pieces that are clicked'''
-                        curr_piece, nxt_piece = self.two_pieces(self.clicks_stored, self.clicks_clicked)
+                        curr_piece, next_piece = self.return_active_pieces(self.clicks_stored)
 
                         '''if the current move color is equal to the next piece color, continue'''
                         if self.move_color[0] == curr_piece.color:
@@ -280,15 +278,14 @@ class ChessBoard:
                             self.move_color.clear()
                             self.move_color.append(curr_piece.color)
 
-                            '''instead of calling ChessRules, just use the Piece.move_is_legal() function'''
-                            rlz = ChessRules(curr_piece, nxt_piece)
-
+                        
                             #if move is legal, then check for checks 
-                            if rlz.is_legal(self.board_arr) == True:
-                                rlz.in_check(self.board_arr)
-                                if rlz.self_check(curr_piece.pos[0],curr_piece.pos[1], self.board_arr):                                
+                            if curr_piece.move_is_legal(next_piece.pos):
+                                
+                                '''if does NOT put self in check'''
+                                if does_not_put_self_in_check(curr_piece, self.board_arr):                                
                                     self.move_piece() # may need to modify to just taking in the two points
-                                if not rlz.self_check(curr_piece.pos[0],curr_piece.pos[1], self.board_arr):
+                                else:
                                     self.clicks_clicked = ()
                                     self.clicks_stored.clear()
                             else: 

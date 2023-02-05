@@ -11,7 +11,7 @@ class Piece:
         
         
 class Empty(Piece):
-    def __init__(self, pos, name, color, board_arr):
+    def __init__(self, pos, board_arr):
         self.pos = pos
         self.name = "."
         self.color = "empty"
@@ -21,7 +21,7 @@ class Empty(Piece):
 class Pawn(Piece):
 
     def __init__(self, pos, name, color, board_arr):
-        super.__init__(pos, name, color, board_arr)
+        super().__init__(pos, name, color, board_arr)
 
     def move_is_legal(self, next_pos):
         if (self.pos[0] == 6) and (next_pos[0] == 4) and (self.pos[1]==next_pos[1]):
@@ -39,7 +39,7 @@ class Pawn(Piece):
 class Rook(Piece):
     
     def __init__(self, pos, name, color, board_arr):
-        super.__init__(pos, name, color, board_arr)
+        super().__init__(pos, name, color, board_arr)
 
 
     def move_is_legal(self, next_pos):
@@ -53,7 +53,7 @@ class Rook(Piece):
 class Bishop(Piece):
     
     def __init__(self, pos, name, color, board_arr):
-        super.__init__(pos, name, color, board_arr)
+        super().__init__(pos, name, color, board_arr)
 
     def move_is_legal(self, next_pos):
         if abs(self.pos[0]-next_pos[0])>=1 and abs(self.pos[1]-next_pos[1])>=1:
@@ -67,7 +67,7 @@ class Bishop(Piece):
 class Knight(Piece):
     
     def __init__(self, pos, name, color,board_arr):
-        super.__init__(pos, name, color,board_arr)
+        super().__init__(pos, name, color,board_arr)
 
     def move_is_legal(self, next_pos):
         col_diff = abs(self.pos[1]-next_pos[1])
@@ -84,7 +84,7 @@ class Knight(Piece):
 class King(Piece):
     
     def __init__(self, pos, name, color,board_arr):
-        super.__init__(pos, name, color,board_arr)
+        super().__init__(pos, name, color,board_arr)
     
     def move_is_legal(self, next_pos):
         return abs(self.pos[0]-next_pos[0])==1 or abs(self.pos[1]-next_pos[1])==1
@@ -97,7 +97,7 @@ class King(Piece):
 class Queen(Piece):
     
     def __init__(self, pos, name, color,board_arr):
-        super.__init__(pos, name, color,board_arr)
+        super().__init__(pos, name, color,board_arr)
     
     def move_is_legal(self, next_pos):
         if abs(self.pos[0]-next_pos[0])>=1 or abs(self.pos[1]-next_pos[1])>=1:
