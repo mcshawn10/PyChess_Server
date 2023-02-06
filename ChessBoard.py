@@ -54,7 +54,7 @@ class ChessBoard:
         pygame.display.set_caption("A.I. HW #2")  # title of the pygame window
 
         # needed arrays/tuples 
-        self.board_arr = [[Empty([x,y]) for x in range(self.rxc)] for y in range(self.rxc)]
+        self.board_arr = [[Empty([y,x]) for x in range(self.rxc)] for y in range(self.rxc)]
 
         self.board_arr[0][0] = Rook([0,0], "bR", "black", self.board_arr)
         self.board_arr[0][1] = Knight([0,1], "bN", "black", self.board_arr)
@@ -134,7 +134,7 @@ class ChessBoard:
         self.board_arr[row_next][col_next] = '.'
         #self.update()
         self.board_arr[row_next][col_next] = selected_piece
-        self.board_arr[row_current][col_current] = Empty([row_current, col_current], self.board_arr)
+        self.board_arr[row_current][col_current] = Empty([row_current, col_current])
 
         self.undo_highlight((row_current, col_current))
         self.undo_highlight((row_next, col_next))
@@ -171,19 +171,19 @@ class ChessBoard:
             name = "bishop"
         return name   
 
-    ''' I don't like this two_pieces, I'm sure theres a better way to go about this'''
+    
     def return_active_pieces(self, cs): #returns the two pieces that are interacting
                    
         row_c, col_c = cs[0]
         selected_piece = self.board_arr[row_c][col_c]
         row_n, col_n = cs[1] 
         next_piece = self.board_arr[row_n][col_n]
-        
+        '''
         if selected_piece == '.':
             selected_piece = Empty(cs[0], self.board_arr)
 
         elif next_piece == '.':
-            next_piece = Empty(cs[1], self.board_arr)
+            next_piece = Empty(cs[1], self.board_arr)'''
 
     
         return selected_piece, next_piece
@@ -258,46 +258,41 @@ class ChessBoard:
                     self.highlight_square((x, y))
                     
                     self.clicks_clicked, self.clicks_stored = self.get_clicks((x,y), self.clicks_stored, self.clicks_clicked)
-                   
-
-                    '''in reality, the algorithm should first check if the pieces are the same color, if not then move forward'''
 
                     if len(self.clicks_stored) == 2:
-                        
-
-                        '''returns the two pieces that are clicked'''
+    
                         curr_piece, next_piece = self.return_active_pieces(self.clicks_stored)
-
-                        '''if the current move color is equal to the next piece color, continue'''
                         if self.move_color[0] == curr_piece.color:
                             self.clicks_clicked = ()
                             self.clicks_stored.clear()                            
                             continue
-                        '''if the current color is not the same, then check the move legality details'''
+                        
                         if self.move_color[0] != curr_piece.color:
+                            print("arrived")
                             self.move_color.clear()
                             self.move_color.append(curr_piece.color)
 
-                        
+                            print(curr_piece.name)
+                            print(next_piece.name)
                             #if move is legal, then check for checks 
                             if curr_piece.move_is_legal(next_piece.pos):
                                 k = return_current_king(curr_piece, self.board_arr)
-                                '''if does NOT put self in check'''
-                                if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
+                                '''if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
                                     self.move_piece() # may need to modify to just taking in the two points
                                 else:
                                     self.clicks_clicked = ()
-                                    self.clicks_stored.clear()
+                                    self.clicks_stored.clear()'''
+                                self.move_piece()
+                                self.clicks_clicked = ()
+                                self.clicks_stored.clear()
+
+                                
                             else: 
+                                print("got here instead")
                                 self.clicks_clicked = ()
                                 self.clicks_stored.clear()
                     #undo_highlight
                     self.update()
-                    
-
-                
-                    
-
             
             clock.tick(60)  # clock running at 60 FPS
             pygame.display.flip()

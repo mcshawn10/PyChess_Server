@@ -25,7 +25,7 @@ class Pawn(Piece):
 
     def move_is_legal(self, next_pos):
         if (self.pos[0] == 6) and (next_pos[0] == 4) and (self.pos[1]==next_pos[1]):
-                    return True
+            return True
         elif next_pos[0] == self.pos[0]-1:
             return True
         elif (next_pos[1] == self.pos[1]+1 or next_pos[1] == self.pos[1]-1) and (next_pos[0] == self.pos[0]-1):
