@@ -74,10 +74,9 @@ class ChessRules():
                     return True
             else: return False
     
-    def clear_path(self, p, goal): #goal is a tuple
-        if abs(self.curr.pos[0]-goal[0])==1 or abs(self.curr.pos[1]-self.goal[1])==1:
-            return True
-        else: return False
+    def clear_path(self, goal): #goal is a tuple
+        return abs(self.curr.pos[0]-goal[0])==1 or abs(self.curr.pos[1]-self.goal[1])==1
+            
 
     def is_clear_diag(self, c, g, board_arr):  # positions (r,c) of the current and the goal
         
@@ -109,7 +108,7 @@ class ChessRules():
             if board_arr[nr][nc] != '.':
                 return False
             else:
-                return self.is_clear_diag((nr,nc),g)
+                return self.is_clear_diag((nr,nc),g, board_arr)
 
         elif c[0]-g[0]<0 and c[1]-g[1]>0: # SW
             
@@ -118,7 +117,7 @@ class ChessRules():
             if board_arr[nr][nc] != '.':
                 return False
             else:
-                return self.is_clear_diag((nr,nc),g)
+                return self.is_clear_diag((nr,nc),g, board_arr)
 
     def is_clear_lin(self,c , g, board_arr):
         
@@ -191,7 +190,7 @@ class ChessRules():
                         coord = (board_arr.index(i),i.index(j))
                         return Piece(coord, "king", "white")
 
-    def same_king(self, board_arr):
+    def same_king(self, board_arr): #determines the current_pieces color, then returns that king
         
         
         if self.curr.color == "white":
