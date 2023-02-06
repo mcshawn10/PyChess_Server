@@ -24,13 +24,24 @@ class Pawn(Piece):
         super().__init__(pos, name, color, board_arr)
 
     def move_is_legal(self, next_pos):
-        if (self.pos[0] == 6) and (next_pos[0] == 4) and (self.pos[1]==next_pos[1]):
-            return True
-        elif next_pos[0] == self.pos[0]-1:
-            return True
-        elif (next_pos[1] == self.pos[1]+1 or next_pos[1] == self.pos[1]-1) and (next_pos[0] == self.pos[0]-1):
-            return True
-        else: return False
+        if self.color == "white":
+            if (self.pos[0] == 6) and (next_pos[0] == 4) and (self.pos[1]==next_pos[1]):
+                return True
+            elif (next_pos[1] == self.pos[1]+1 or next_pos[1] == self.pos[1]-1) and (next_pos[0] == self.pos[0]-1):
+                return True
+            elif next_pos[0] == self.pos[0]-1:
+                return True
+            else:
+                print("you suck") 
+                return False
+        else: 
+            if (self.pos[0] == 1) and (next_pos[0] == 3) and (self.pos[1]==next_pos[1]): 
+                return True  # if black   
+            elif (next_pos[1] == self.pos[1]+1 or next_pos[1] == self.pos[1]-1) and (next_pos[0] == self.pos[0]+1):
+                return True
+            elif next_pos[0] == self.pos[0]+1:
+                return True
+            else: return False
 
     def get_legal_moves(self):
         pass

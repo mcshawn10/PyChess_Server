@@ -134,8 +134,9 @@ class ChessBoard:
         self.board_arr[row_next][col_next] = '.'
         #self.update()
         self.board_arr[row_next][col_next] = selected_piece
+        selected_piece.pos = [row_next, col_next]
         self.board_arr[row_current][col_current] = Empty([row_current, col_current])
-
+        
         self.undo_highlight((row_current, col_current))
         self.undo_highlight((row_next, col_next))
 
@@ -178,14 +179,7 @@ class ChessBoard:
         selected_piece = self.board_arr[row_c][col_c]
         row_n, col_n = cs[1] 
         next_piece = self.board_arr[row_n][col_n]
-        '''
-        if selected_piece == '.':
-            selected_piece = Empty(cs[0], self.board_arr)
-
-        elif next_piece == '.':
-            next_piece = Empty(cs[1], self.board_arr)'''
-
-    
+            
         return selected_piece, next_piece
 
     def get_clicks(self, ip_pos, cs, cc):   
@@ -203,7 +197,7 @@ class ChessBoard:
         for row in range(self.rxc):
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
-                '''more like if piece.name != None, then blit the image'''
+                
                 if piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                        self.squares, self.squares))  # draws pieces onto the board
@@ -218,12 +212,7 @@ class ChessBoard:
         col = x // self.squares
         return row, col  # get position of piece
 
-    '''def inst_piece(self, pos):
-        r,c = pos[0],pos[1]
-        piece = self.board_arr[r][c]
-        name = self.get_name(piece)
-        clr = self.return_color(piece)
-        return self.Piece(pos,name,clr)''' # deprecated
+   
 
     def highlight_square(self, pos):
         r,c = pos[0],pos[1]
@@ -277,14 +266,13 @@ class ChessBoard:
                             #if move is legal, then check for checks 
                             if curr_piece.move_is_legal(next_piece.pos):
                                 k = return_current_king(curr_piece, self.board_arr)
-                                '''if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
+                                if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
                                     self.move_piece() # may need to modify to just taking in the two points
                                 else:
                                     self.clicks_clicked = ()
-                                    self.clicks_stored.clear()'''
-                                self.move_piece()
-                                self.clicks_clicked = ()
-                                self.clicks_stored.clear()
+                                    self.clicks_stored.clear()
+                                
+                            
 
                                 
                             else: 
