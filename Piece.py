@@ -10,12 +10,12 @@ class Piece:
         self.board_arr = board_arr
         
         
-class Empty(Piece):
-    def __init__(self, pos, board_arr):
+class Empty():
+    def __init__(self, pos):
         self.pos = pos
         self.name = "."
-        self.color = "empty"
-        self.board_arr = board_arr
+        self.color = "."
+        #self.board_arr = board_arr
 
 
 class Pawn(Piece):

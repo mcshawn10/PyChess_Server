@@ -190,7 +190,7 @@ class ChessRules():
                         coord = (board_arr.index(i),i.index(j))
                         return Piece(coord, "king", "white")
 
-    def same_king(self, board_arr):
+    def same_king(self, board_arr): #determines the current_pieces color, then returns that king
         
         
         if self.curr.color == "white":

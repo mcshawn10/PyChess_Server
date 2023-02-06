@@ -54,7 +54,7 @@ class ChessBoard:
         pygame.display.set_caption("A.I. HW #2")  # title of the pygame window
 
         # needed arrays/tuples 
-        self.board_arr = [['.' for x in range(self.rxc)] for _ in range(self.rxc)]
+        self.board_arr = [[Empty([x,y]) for x in range(self.rxc)] for y in range(self.rxc)]
 
         self.board_arr[0][0] = Rook([0,0], "bR", "black", self.board_arr)
         self.board_arr[0][1] = Knight([0,1], "bN", "black", self.board_arr)
@@ -66,14 +66,14 @@ class ChessBoard:
         self.board_arr[0][7] = Rook([0,7], "bR", "black", self.board_arr)
 
         self.board_arr[1][0] = Pawn([1,0], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,1], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,2], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,3], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,4], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,5], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,6], "bp", "black", self.board_arr)
-        self.board_arr[1][0] = Pawn([1,7], "bp", "black", self.board_arr)
-
+        self.board_arr[1][1] = Pawn([1,1], "bp", "black", self.board_arr)
+        self.board_arr[1][2] = Pawn([1,2], "bp", "black", self.board_arr)
+        self.board_arr[1][3] = Pawn([1,3], "bp", "black", self.board_arr)
+        self.board_arr[1][4] = Pawn([1,4], "bp", "black", self.board_arr)
+        self.board_arr[1][5] = Pawn([1,5], "bp", "black", self.board_arr)
+        self.board_arr[1][6] = Pawn([1,6], "bp", "black", self.board_arr)
+        self.board_arr[1][7] = Pawn([1,7], "bp", "black", self.board_arr)
+        
         self.board_arr[6][0] = Pawn([6,0], "wp", "white", self.board_arr)
         self.board_arr[6][1] = Pawn([6,1], "wp", "white", self.board_arr)
         self.board_arr[6][2] = Pawn([6,2], "wp", "white", self.board_arr)
@@ -113,7 +113,7 @@ class ChessBoard:
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
                 '''blit piece.image'''
-                if piece != '.':
+                if piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                        self.squares, self.squares))
 
@@ -134,7 +134,7 @@ class ChessBoard:
         self.board_arr[row_next][col_next] = '.'
         #self.update()
         self.board_arr[row_next][col_next] = selected_piece
-        self.board_arr[row_current][col_current] = '.'
+        self.board_arr[row_current][col_current] = Empty([row_current, col_current], self.board_arr)
 
         self.undo_highlight((row_current, col_current))
         self.undo_highlight((row_next, col_next))
@@ -204,10 +204,10 @@ class ChessBoard:
             for col in range(self.rxc):
                 piece = self.board_arr[row][col]
                 '''more like if piece.name != None, then blit the image'''
-                if piece != '.':
+                if piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                        self.squares, self.squares))  # draws pieces onto the board
-                elif piece == '.':
+                elif piece.name == '.':
                         color = colors[((row+col) % 2)]
                         pygame.draw.rect(self.screen, color, pygame.Rect(
                     col*self.squares, row*self.squares, self.squares, self.squares))
@@ -218,12 +218,12 @@ class ChessBoard:
         col = x // self.squares
         return row, col  # get position of piece
 
-    def inst_piece(self, pos):
+    '''def inst_piece(self, pos):
         r,c = pos[0],pos[1]
         piece = self.board_arr[r][c]
         name = self.get_name(piece)
         clr = self.return_color(piece)
-        return self.Piece(pos,name,clr)
+        return self.Piece(pos,name,clr)''' # deprecated
 
     def highlight_square(self, pos):
         r,c = pos[0],pos[1]
@@ -281,9 +281,9 @@ class ChessBoard:
                         
                             #if move is legal, then check for checks 
                             if curr_piece.move_is_legal(next_piece.pos):
-                                
+                                k = return_current_king(curr_piece, self.board_arr)
                                 '''if does NOT put self in check'''
-                                if does_not_put_self_in_check(curr_piece, self.board_arr):                                
+                                if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
                                     self.move_piece() # may need to modify to just taking in the two points
                                 else:
                                     self.clicks_clicked = ()

@@ -3,12 +3,13 @@ def check_color(current, other):
     return current.color == other.color
 
 
-def lin_atk(p):
+def lin_atk(p): #if linear is clear, return true, if not...
         
     w_lin = ['wR', 'wQ']
     b_lin = ['bR', 'bQ']
     
-    if p.color == "white" and p.name in w_lin:
+    if p == '.': return False
+    elif p.color == "white" and p.name in w_lin:
         return True
         
     elif p.color == "black" and p.name in b_lin:
@@ -20,8 +21,9 @@ def diag_atk(p):
     w_diag = ['wB', 'wQ']
     b_diag = ['bB', 'bQ']
     
+    if p == '.': return False
 
-    if p.color == "white" and p.name in w_diag:
+    elif p.color == "white" and p.name in w_diag:
         return True
             
     elif p.color == "black" and p.name in b_diag:
@@ -70,7 +72,7 @@ def is_clear_diag(c, g, board_arr):  # positions (r,c) of the current and the go
             else:
                 return is_clear_diag((nr,nc),g, board_arr)
 
-def is_clear_lin(c, g, board_arr):
+def is_clear_lin(c, g, board_arr): #if linear is clear, return true, if not...
     
 
     if (abs(c[0]-g[0])==1 or abs(c[1]-g[1])==1):
@@ -129,12 +131,13 @@ def return_current_king(current_piece, board_arr):
 
                 elif board_arr[r][c].name == 'bK': return board_arr[r][c]
 
-def does_not_put_self_in_check(current_piece, board_arr):
+def does_not_put_self_in_check(k, current_piece, board_arr):
     white = ['wR', 'wN', 'wB', 'wQ', 'wK', 'wp']
     black = ['bR', 'bN', 'bB', 'bQ', 'bK','bp']
-    k = return_current_king(current_piece, board_arr)
+    #k = return_current_king(current_piece, board_arr)
     r = current_piece.pos[0]
     c = current_piece.pos[1]
+    
     #check left
     if k.pos[0] == current_piece.pos[0] and k.pos[1]-current_piece.pos[1]>0:
         nc = c-1
@@ -147,8 +150,8 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not lin_atk(board_arr[r][nc]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[r][nc], board_arr)
-    #check right
+            return does_not_put_self_in_check(k, board_arr[r][nc], board_arr)
+    #check right/ linear
     elif k.pos[0] == current_piece.pos[0] and k.pos[1]-current_piece.pos[1]<0:
         nc = c+1
         if board_arr[r][nc] != '.':
@@ -160,7 +163,7 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not lin_atk(board_arr[r][nc]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[r][nc], board_arr)
+            return does_not_put_self_in_check(k, board_arr[r][nc], board_arr)
     #NE
     elif k.pos[0]-current_piece.pos[0]>0 and k.pos[1]-current_piece.pos[1]<0:
         nc = c+1
@@ -174,7 +177,7 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not diag_atk(board_arr[nr][nc]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[nr][nc], board_arr)
+            return does_not_put_self_in_check(k, board_arr[nr][nc], board_arr)
     #SE
     elif k.pos[0]-current_piece.pos[0]<0 and k.pos[1]-current_piece.pos[1]<0:
         nc = c+1
@@ -188,7 +191,7 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not diag_atk(board_arr[nr][nc]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[nr][nc], board_arr)
+            return does_not_put_self_in_check(k, board_arr[nr][nc], board_arr)
 
     #SW
     elif k.pos[0]-current_piece.pos[0]<0 and k.pos[1]-current_piece.pos[1]>0:
@@ -203,9 +206,9 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not diag_atk(board_arr[nr][nc]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[nr][nc], board_arr)
+            return does_not_put_self_in_check(k, board_arr[nr][nc], board_arr)
     #NW
-    elif k.pos[0]-current_piece.pos[0]>0 and k.pos[1]-current_piece.pos[1]>0:
+    elif k.pos[0]-current_piece.pos[0]>0 and k.pos[1]-current_piece.pos[1]>0: # have to adjust this so that an empty square doesnt cause bugs
         nc = c-1
         nr = r-1
         if board_arr[nr][nc] != '.':
@@ -215,10 +218,10 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 if diag_atk(board_arr[nr][nc]):
                     return False
                 elif not diag_atk(board_arr[nr][nc]):
-                    print("not working")
+                    
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[nr][nc], board_arr)
+            return does_not_put_self_in_check(k, board_arr[nr][nc], board_arr)
     #front
     elif k.pos[1]==current_piece.pos[1] and k.pos[0]-current_piece.pos[0]>0:
         nr = r-1
@@ -231,7 +234,7 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not lin_atk(board_arr[nr][c]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[nr][c], board_arr)
+            return does_not_put_self_in_check(k, board_arr[nr][c], board_arr)
     #back
     elif k.pos[1]==current_piece.pos[1] and k.pos[0]-current_piece.pos[0]<0:
         nr= r+1
@@ -244,7 +247,7 @@ def does_not_put_self_in_check(current_piece, board_arr):
                 elif not lin_atk(board_arr[nr][c]):
                     return True
         else:
-            return does_not_put_self_in_check(board_arr[nr][c], board_arr)
+            return does_not_put_self_in_check(k, board_arr[nr][c], board_arr)
 
 def in_check(current_piece):
     pass
