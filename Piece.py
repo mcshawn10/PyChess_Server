@@ -15,7 +15,10 @@ class Empty():
         self.pos = pos
         self.name = "."
         self.color = "."
-        #self.board_arr = board_arr
+    
+    def move_is_legal(self, next_pos):
+        return False
+        
 
 
 class Pawn(Piece):
@@ -32,7 +35,7 @@ class Pawn(Piece):
             elif next_pos[0] == self.pos[0]-1:
                 return True
             else:
-                print("you suck") 
+                
                 return False
         else: 
             if (self.pos[0] == 1) and (next_pos[0] == 3) and (self.pos[1]==next_pos[1]): 

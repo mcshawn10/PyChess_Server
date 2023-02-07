@@ -1,7 +1,6 @@
 import pygame
 import sys
 
-from ChessRules import ChessRules
 from Piece import *
 
 
@@ -9,22 +8,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 
-w_lin = ['wR', 'wQ']
-w_diag = ['wB', 'wQ']
 
-b_lin = ['bR', 'bQ']
-b_diag = ['bB', 'bQ']
-old_board = [
-             ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
-             ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['.', '.', '.', '.', '.', '.', '.', '.'],
-             ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
-             ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']]
-
-#screen = pygame.display.set_mode((512, 512))  # Setting the screen size
 
 class ChessBoard:
     
@@ -131,8 +115,8 @@ class ChessBoard:
             self.avail_black.remove(self.board_arr[row_next][col_next])
 
 
-        self.board_arr[row_next][col_next] = '.'
-        #self.update()
+        self.board_arr[row_next][col_next] = Empty([row_next, col_next])
+        self.update()
         self.board_arr[row_next][col_next] = selected_piece
         selected_piece.pos = [row_next, col_next]
         self.board_arr[row_current][col_current] = Empty([row_current, col_current])
@@ -143,34 +127,6 @@ class ChessBoard:
         self.clicks_clicked = ()
         self.clicks_stored.clear()
 
-
-            
-    def return_color(self,p):
-        
-        if p == '.':
-            return "blank"
-        elif p in self.white:
-            return "white"
-        elif p in self.black:
-            return "black"
-          
-    def get_name(self, p):
-        name = "_"
-        if p == '.':
-            name = "blank"
-        if p == 'bp' or p == 'wp':
-            name = "pawn"            
-        if p == 'wK' or p == 'bK':
-            name = "king"            
-        if p == 'wQ' or p == 'bQ':
-            name = "queen"            
-        if p == 'bR' or p == 'wR':
-            name = "rook"            
-        if p == 'bN' or p == 'wN':
-            name = "knight"            
-        if p == 'bB' or p == 'wB':
-            name = "bishop"
-        return name   
 
     
     def return_active_pieces(self, cs): #returns the two pieces that are interacting
@@ -206,13 +162,12 @@ class ChessBoard:
                         pygame.draw.rect(self.screen, color, pygame.Rect(
                     col*self.squares, row*self.squares, self.squares, self.squares))
 
+
     def get_pos(self, pos):
         x, y = pos
         row = y // self.squares
         col = x // self.squares
         return row, col  # get position of piece
-
-   
 
     def highlight_square(self, pos):
         r,c = pos[0],pos[1]
@@ -253,34 +208,30 @@ class ChessBoard:
                         curr_piece, next_piece = self.return_active_pieces(self.clicks_stored)
                         if self.move_color[0] == curr_piece.color:
                             self.clicks_clicked = ()
-                            self.clicks_stored.clear()                            
+                            self.clicks_stored.clear()  
+                            self.undo_highlight(curr_piece.pos)                          
                             continue
                         
                         if self.move_color[0] != curr_piece.color:
-                            print("arrived")
+                            
                             self.move_color.clear()
                             self.move_color.append(curr_piece.color)
-
-                            print(curr_piece.name)
-                            print(next_piece.name)
                             #if move is legal, then check for checks 
                             if curr_piece.move_is_legal(next_piece.pos):
                                 k = return_current_king(curr_piece, self.board_arr)
                                 if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
-                                    self.move_piece() # may need to modify to just taking in the two points
+                                    self.move_piece() 
+                                    pygame.display.flip()
+                                    # may need to modify to just taking in the two points
                                 else:
                                     self.clicks_clicked = ()
-                                    self.clicks_stored.clear()
-                                
-                            
-
-                                
+                                    self.clicks_stored.clear() 
                             else: 
                                 print("got here instead")
                                 self.clicks_clicked = ()
                                 self.clicks_stored.clear()
                     #undo_highlight
-                    self.update()
+                self.update()
             
             clock.tick(60)  # clock running at 60 FPS
             pygame.display.flip()
