@@ -108,12 +108,7 @@ class ChessBoard:
         selected_piece = self.board_arr[row_current][col_current]
 
         #highlight piece
-        '''
-        if self.board_arr[row_next][col_next].name in self.avail_white:
-            self.avail_white.remove(self.board_arr[row_next][col_next])
-        elif self.board_arr[row_next][col_next].name in self.avail_black:
-            self.avail_black.remove(self.board_arr[row_next][col_next])
-        '''
+        
 
         self.board_arr[row_next][col_next] = Empty([row_next, col_next])
         self.update()
