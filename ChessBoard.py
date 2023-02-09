@@ -35,7 +35,7 @@ class ChessBoard:
 
         self.screen = pygame.display.set_mode((512, 512))  # Setting the screen size
         self.screen.fill(pygame.Color((255, 228, 181)))  # intitally fills screen to be all tan color
-        pygame.display.set_caption("A.I. HW #2")  # title of the pygame window
+        pygame.display.set_caption("PyChess")  # title of the pygame window
 
         # needed arrays/tuples 
         self.board_arr = [[Empty([y,x]) for x in range(self.rxc)] for y in range(self.rxc)]
@@ -108,12 +108,12 @@ class ChessBoard:
         selected_piece = self.board_arr[row_current][col_current]
 
         #highlight piece
-    
-        if self.board_arr[row_next][col_next] in self.avail_white:
+        '''
+        if self.board_arr[row_next][col_next].name in self.avail_white:
             self.avail_white.remove(self.board_arr[row_next][col_next])
-        if self.board_arr[row_next][col_next] in self.avail_black:
+        elif self.board_arr[row_next][col_next].name in self.avail_black:
             self.avail_black.remove(self.board_arr[row_next][col_next])
-
+        '''
 
         self.board_arr[row_next][col_next] = Empty([row_next, col_next])
         self.update()
@@ -206,30 +206,38 @@ class ChessBoard:
                     if len(self.clicks_stored) == 2:
     
                         curr_piece, next_piece = self.return_active_pieces(self.clicks_stored)
-                        if self.move_color[0] == curr_piece.color:
+                        
+
+                        if self.move_color[0] == curr_piece.color or curr_piece.name == '.':
                             self.clicks_clicked = ()
                             self.clicks_stored.clear()  
                             self.undo_highlight(curr_piece.pos)                          
                             continue
                         
-                        if self.move_color[0] != curr_piece.color:
+                        elif self.move_color[0] != curr_piece.color:
                             
-                            self.move_color.clear()
-                            self.move_color.append(curr_piece.color)
+                            
                             #if move is legal, then check for checks 
                             if curr_piece.move_is_legal(next_piece.pos):
                                 k = return_current_king(curr_piece, self.board_arr)
-                                if does_not_put_self_in_check(k, curr_piece, self.board_arr):                                
+                                if does_not_put_self_in_check(k, curr_piece, self.board_arr, next_piece.pos):                                
                                     self.move_piece() 
                                     pygame.display.flip()
                                     # may need to modify to just taking in the two points
                                 else:
                                     self.clicks_clicked = ()
                                     self.clicks_stored.clear() 
+                                    self.undo_highlight(curr_piece.pos)
+                                    
+                                    print("puts self in check")
+                                    continue
+                                    
                             else: 
-                                print("got here instead")
+                                
                                 self.clicks_clicked = ()
                                 self.clicks_stored.clear()
+                        self.move_color.clear()
+                        self.move_color.append(curr_piece.color)
                     #undo_highlight
                 self.update()
             
