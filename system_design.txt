@@ -5,3 +5,8 @@ we need to be able to send the move information from the server to handle_client
 essentially, this is all we're doing, sending this information from one end to the other
 
 whats the most effective way to be able to have valid moves? especially for a minimax AI?
+
+bugs to fix:
+- knight can take own pieces
+- checkmate
+- move legality as a whole?
