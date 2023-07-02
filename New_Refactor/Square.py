@@ -2,13 +2,24 @@
 
 class Square:
 
-    def __init__(self, is_empty, Piece, coordinate):
+    def __init__(self, is_empty, P, coordinate):
         self.is_empty = is_empty 
-        self.Piece = Piece
+        self.piece = P
         self.coordinate = coordinate
 
-    def return_Piece(self):
-        return self.Piece
-
-
+    def get_Piece(self):
+        if not self.is_empty:
+            return self.piece
+        else: return None
     
+    def get_Piece_color(self):
+        if not self.is_empty:
+            return self.piece.color
+        else: return None
+
+
+
+
+
+if __name__ == "__main__":
+    pass

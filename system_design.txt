@@ -13,10 +13,10 @@ bugs to fix:
 
 
 Piece:
-- each piece has certain legal moves; get legal moves()
+- each piece has certain legal moves; get legal moves()  
 - is it the players turn?, can you move the piece? is_movable
 - is the piece selected? select, deselect -> what constraints are there that would make a piece selectable?
-- 
+- each piece should have a member list of legal moves
 
 cell:
 - is the cell empty?
