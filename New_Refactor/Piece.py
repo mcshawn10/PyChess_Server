@@ -1,12 +1,15 @@
 
+from typing import Any
 import Square
-import util
+from new_rf_util import *
 class Piece:
     def __init__(self, name, color, coordinate, board): # pos should NOT be tuple
         
         self.name = name
         self.color = color
         self.coordinate = coordinate
+        self.row = coordinate[0]
+        self.col = coordinate[1]
         self.board = board
         self.is_turn = False
         self.is_selected = False
@@ -26,7 +29,7 @@ class Piece:
         
         if destination_square.is_empty or is_opposite_color:
             return True
-        else: return False# destination square color is opposite of the current color
+        else: return False
 
 
 
@@ -38,10 +41,46 @@ class King(Piece):
     def get_legal_moves(self): #king will have 8 moves, though it must fit in the constraints
         # so what's the easiest way to write the function? , pass in a next square?
         # but you have to iterate through each possible square to get a LIST
-        for row in range(self.color[0] - 1, 2, )
+        possible_moves = [(self.row+1, self.col), (self.row+1, self.col-1), (self.row+1, self.col+1), 
+                          (self.row, self.col+1), (self.row, self.col-1), 
+                          (self.row-1, self.col+1), (self.row-1, self.col), (self.row-1, self.col-1)]
+                          
 
+        for move in possible_moves:
+            
+            if is_in_bounds(move): self.legal_moves.append(move)
+            else: continue
+        
+        return self.legal_moves
+    
     def move_is_legal(self, destination_square: Square):
         return super().move_is_legal(destination_square)
+    
+    class Queen(Piece):
+        def __init__(self, name, color, coordinate, board):
+            super().__init__(name, color, coordinate, board)
+
+        def get_legal_moves(self):
+            
+            ''' queen moves linearly and diagonally
+                so in order for the move to be legal, it cant move through anyone -> recursive function '''
+
+    class Pawn(Piece):
+
+        def __init__(self, name, color, coordinate, board):
+            super().__init__(name, color, coordinate, board)
+
+        def get_legal_moves(self):
+            '''you want to check the diagonals for each move, if the square color is opposite, you can move there'''
+            if self.color == "white" and self.row == 6:
+                self.legal_moves.append((self.row+1, self.col), (self.row+2, self.col))
+
+            if self.color == "black" and self.row == 1:
+                self.legal_moves.append((self.row-1, self.col), (self.row-2, self.col))
+            
+                
+            possible_moves = []
+        
 
 if __name__ == "__main__":
     pass
