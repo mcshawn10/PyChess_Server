@@ -10,3 +10,26 @@ bugs to fix:
 - knight can take own pieces
 - checkmate
 - move legality as a whole?
+
+
+Piece:
+- each piece has certain legal moves; get legal moves()
+- is it the players turn?, can you move the piece? is_movable
+- is the piece selected? select, deselect -> what constraints are there that would make a piece selectable?
+- 
+
+cell:
+- is the cell empty?
+- if not, what piece is in it?
+
+board:
+- comprised of cells 
+- is this the game engine? -> probably should move the engine away from the board, since the board is an object
+
+screen:
+- holds the board
+- tells whose move it is
+- tracks time, and move number?
+
+engine:
+- the rules

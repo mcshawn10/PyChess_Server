@@ -8,6 +8,9 @@ class Piece:
         self.name = name
         self.color = color
         self.board_arr = board_arr
+
+        #self.is_selectable = false
+        #self.selected = false
         
         
 class Empty():
