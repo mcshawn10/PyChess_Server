@@ -71,15 +71,38 @@ class King(Piece):
             super().__init__(name, color, coordinate, board)
 
         def get_legal_moves(self):
+            possible_moves = []
             '''you want to check the diagonals for each move, if the square color is opposite, you can move there'''
+            
             if self.color == "white" and self.row == 6:
                 self.legal_moves.append((self.row+1, self.col), (self.row+2, self.col))
+                self.can_capture()
 
             if self.color == "black" and self.row == 1:
                 self.legal_moves.append((self.row-1, self.col), (self.row-2, self.col))
+                self.can_capture()
             
-                
-            possible_moves = []
+        def can_capture(self):
+
+            if self.color == "white":
+                capture_squares = [(self.row-1, self.col-1), (self.row-1, self.col+1)]
+
+                for square in capture_squares:
+                    if is_in_bounds(square) and is_opposite_color(self.color, self.board[square[0]][square[1]]):
+                        self.legal_moves.append(square)
+                    else: continue
+
+            if self.color == "black":
+                capture_squares = [(self.row+1, self.col-1), (self.row+1, self.col+1)]
+
+                for square in capture_squares:
+                    if is_in_bounds(square) and is_opposite_color(self.color, self.board[square[0]][square[1]]):
+                        self.legal_moves.append(square)
+                    else: continue
+
+
+
+            
         
 
 if __name__ == "__main__":
