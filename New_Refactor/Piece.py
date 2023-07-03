@@ -113,8 +113,24 @@ class Rook(Piece):
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
         
-          
+    def get_legal_moves(self): # this is NOT the most efficient way to get the SMALLEST LIST
+        self.legal_moves.clear()
+        for i in range(8):
+            self.legal_moves.append((i, self.col))
+        for i in range(8):
+            self.legal_moves.append((self.row, i))
+        return self.legal_moves
+
+class Bishop(Piece):
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
+
+
+class Knight(Piece):
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
         
+           
 
 if __name__ == "__main__":
     pass
