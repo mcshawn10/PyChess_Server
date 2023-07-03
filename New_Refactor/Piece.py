@@ -1,5 +1,5 @@
 
-from typing import Any
+
 import Square
 from new_rf_util import *
 class Piece:
@@ -56,53 +56,64 @@ class King(Piece):
     def move_is_legal(self, destination_square: Square):
         return super().move_is_legal(destination_square)
     
-    class Queen(Piece):
-        def __init__(self, name, color, coordinate, board):
-            super().__init__(name, color, coordinate, board)
+class Queen(Piece):
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
 
-        def get_legal_moves(self):
-            
-            ''' queen moves linearly and diagonally
-                so in order for the move to be legal, it cant move through anyone -> recursive function '''
+    def get_legal_moves(self):
+        
+        ''' queen moves linearly and diagonally
+            so in order for the move to be legal, it cant move through anyone -> recursive function '''
 
-    class Pawn(Piece):
+class Pawn(Piece):
 
-        def __init__(self, name, color, coordinate, board):
-            super().__init__(name, color, coordinate, board)
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
 
-        def get_legal_moves(self):
-            possible_moves = []
-            '''you want to check the diagonals for each move, if the square color is opposite, you can move there'''
-            
-            if self.color == "white" and self.row == 6:
-                self.legal_moves.append((self.row+1, self.col), (self.row+2, self.col))
-                self.can_capture()
+    def get_legal_moves(self):
+        self.legal_moves.clear()
+        
+        if self.color == "white":
+            self.get_pawn_captures()
+            if self.row == 6: self.legal_moves.append((self.row+1, self.col), (self.row+2, self.col))
+                
+            else: self.legal_moves.append((self.row+1, self.col))
+                
 
-            if self.color == "black" and self.row == 1:
-                self.legal_moves.append((self.row-1, self.col), (self.row-2, self.col))
-                self.can_capture()
-            
-        def can_capture(self):
+        if self.color == "black":
+            self.get_pawn_captures()
+            if self.row == 1: self.legal_moves.append((self.row-1, self.col), (self.row-2, self.col))
 
-            if self.color == "white":
-                capture_squares = [(self.row-1, self.col-1), (self.row-1, self.col+1)]
+            else: self.legal_moves.append((self.row-1, self.col))
 
-                for square in capture_squares:
-                    if is_in_bounds(square) and is_opposite_color(self.color, self.board[square[0]][square[1]]):
-                        self.legal_moves.append(square)
-                    else: continue
-
-            if self.color == "black":
-                capture_squares = [(self.row+1, self.col-1), (self.row+1, self.col+1)]
-
-                for square in capture_squares:
-                    if is_in_bounds(square) and is_opposite_color(self.color, self.board[square[0]][square[1]]):
-                        self.legal_moves.append(square)
-                    else: continue
+        return self.legal_moves
 
 
+    def get_pawn_captures(self):
 
-            
+        if self.color == "white":
+            capture_squares = [(self.row-1, self.col-1), (self.row-1, self.col+1)]
+
+            for square in capture_squares:
+                if is_in_bounds(square) and is_opposite_color(self.color, self.board[square[0]][square[1]]):
+                    self.legal_moves.append(square)
+                else: continue
+
+        if self.color == "black":
+            capture_squares = [(self.row+1, self.col-1), (self.row+1, self.col+1)]
+
+            for square in capture_squares:
+                if is_in_bounds(square) and is_opposite_color(self.color, self.board[square[0]][square[1]]):
+                    self.legal_moves.append(square)
+                else: continue
+
+
+class Rook(Piece):
+
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
+        
+          
         
 
 if __name__ == "__main__":
