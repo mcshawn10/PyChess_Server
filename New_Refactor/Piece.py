@@ -240,6 +240,18 @@ class Rook(Piece):
         for i in range(8):
             self.legal_moves.append((self.row, i))
         return self.legal_moves
+    
+    def is_clear_right(self):
+        return super().is_clear_right()
+    
+    def is_clear_left(self):
+        return super().is_clear_left()
+    
+    def is_clear_forward(self):
+        return super().is_clear_forward()
+    
+    def is_clear_backward(self):
+        return super().is_clear_backward()
 
 class Bishop(Piece):
     def __init__(self, name, color, coordinate, board):
