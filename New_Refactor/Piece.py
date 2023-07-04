@@ -24,7 +24,7 @@ class Piece:
             2. additionally, get_legal_moves will deal with the GEOMETRY'''
         return self.legal_moves
     
-    def move_is_legal(self, destination_square:Square): 
+    def move_is_legal(self, destination_square:Square): # destination_square could have remained tuple ?
         # will return the legality, is there a same color piece blocking the selected piece?
         is_opposite_color = is_opposite_color(self.color, destination_square.get_Piece_color())
         
@@ -32,124 +32,43 @@ class Piece:
             return True
         else: return False
 
-    def is_clear_diag(self, c:tuple, g:tuple, board_arr:list[list]):   # positions (r,c) of the current and the goal
-        # you can pass in the coordinates, do you need to pass in the board_arr
-        if abs(c[0]-g[0])==1 and abs(c[1]-g[1])==1:
-            return True  
-
-        elif c[0]-g[0]>0 and c[1]-g[1]<0: # NE
-            
-            nr = c[0]-1
-            nc = c[1]+1
-            if board_arr[nr][nc].name != '.':                                 
-                return False
-            else:           
-                return is_clear_diag((nr,nc),g, board_arr)            
-
-        elif c[0]-g[0]<0 and c[1]-g[1]<0: # SE
-            
-            nr = c[0]+1
-            nc = c[1]+1
-            if board_arr[nr][nc].name != '.':
-                return False
-            else:
-                return is_clear_diag((nr,nc),g, board_arr)
-
-        elif c[0]-g[0]>0 and c[1]-g[1]>0: # NW
-            
-            nr = c[0]-1
-            nc = c[1]-1
-            if board_arr[nr][nc].name != '.':
-                return False
-            else:
-                return is_clear_diag((nr,nc),g, board_arr)
-
-        elif c[0]-g[0]<0 and c[1]-g[1]>0: # SW
-            
-            nr = c[0]+1
-            nc = c[1]-1
-            if board_arr[nr][nc].name != '.':
-                return False
-            else:
-                return is_clear_diag((nr,nc),g, board_arr)
-
-    def is_clear_lin(self, c, g, board_arr): #if linear is clear, return true, if not...
-    
-
-        if (abs(c[0]-g[0])==1 or abs(c[1]-g[1])==1):
-            
-            return True
-        
-        elif c[0]-g[0]>0: #  N
-            nr = c[0]-1
-            if board_arr[nr][c[1]].name != '.':
-                return False
-            else:
-                return is_clear_lin((nr,c[1]), g, board_arr)
-
-        elif c[0]-g[0]<0: #  S
-            nr = c[0]+1
-            if board_arr[nr][c[1]].name != '.':
-                return False
-            else:
-                return is_clear_lin((nr,c[1]), g, board_arr)
-
-        elif c[1]-g[1]<0: #  E
-            nc = c[1]+1
-            if board_arr[c[0]][nc].name != '.':
-                return False
-            else:
-                return is_clear_lin((c[0],nc), g, board_arr)
-        elif c[1]-g[1]>0: #  W
-            nc = c[1]-1
-            if board_arr[c[0]][nc].name != '.':
-                return False
-            else:
-                return is_clear_lin((c[0],nc), g, board_arr)
-
-
-    def is_clear_right(self):
+    def get_moves_right(self):
 
         if self.col <=6:
             for i in range(self.col, 8):
-                if self.board[self.row][i].is_empty:
-                    self.legal_moves.append((self.row, i))
-                elif is_opposite_color(self.color, self.board[self.row][i]):
-                    self.legal_moves.append((self.row, i))
-                    break
+                if self.move_is_legal(self.board[self.row][i]):
+
+                    self.legal_moves.append((self.row,i))
+
                 else: break
 
-    def is_clear_left(self):
+    def get_moves_left(self):
     
         if self.col >=1:
             for i in range(1, self.col):
-                if self.board[self.row][i].is_empty:
-                    self.legal_moves.append((self.row, i))
-                elif is_opposite_color(self.color, self.board[self.row][i]):
-                    self.legal_moves.append((self.row, i))
-                    break
+                
+                if self.move_is_legal(self.board[self.row][i]):
+    
+                    self.legal_moves.append((self.row,i))
+
                 else: break
 
-    def is_clear_forward(self):
+    def get_moves_forward(self):
         
         if self.row >=1:
             for i in range(self.row, 0, -1):
-                if self.board[i][self.col].is_empty:
+                if self.move_is_legal(self.board[i][self.col]):
                     self.legal_moves.append((i, self.col))
-                elif is_opposite_color(self.color, self.board[i][self.col]):
-                    self.legal_moves.append((i, self.col))
-                    break
+                
                 else: break
 
-    def is_clear_backward(self):
+    def get_moves_backward(self):
         
         if self.row <= 6:
             for i in range(self.row, 8):
-                if self.board[self.row][i].is_empty:
-                    self.legal_moves.append((self.row, i))
-                elif is_opposite_color(self.color, self.board[self.row][i]):
-                    self.legal_moves.append((self.row, i))
-                    break
+                if self.move_is_legal(self.board[i][self.col]):
+                    self.legal_moves.append((i, self.col))
+                
                 else: break
         
 
@@ -168,7 +87,8 @@ class King(Piece):
 
         for move in possible_moves:
             
-            if is_in_bounds(move): self.legal_moves.append(move)
+            if is_in_bounds(move) and self.move_is_legal(self.board[move[0]][move[1]]):
+                self.legal_moves.append(move)
             else: continue
         
         return self.legal_moves
@@ -182,6 +102,12 @@ class Queen(Piece):
 
     def get_legal_moves(self):
         
+        self.get_moves_backward()
+        self.get_moves_forward()
+        self.get_moves_left()
+        self.get_moves_right()
+
+        return self.legal_moves
         ''' queen moves linearly and diagonally
             so in order for the move to be legal, it cant move through anyone -> recursive function '''
 
@@ -234,24 +160,24 @@ class Rook(Piece):
         super().__init__(name, color, coordinate, board)
         
     def get_legal_moves(self): # this is NOT the most efficient way to get the SMALLEST LIST
-        self.legal_moves.clear()
-        for i in range(8):
-            self.legal_moves.append((i, self.col))
-        for i in range(8):
-            self.legal_moves.append((self.row, i))
+        self.get_moves_backward()
+        self.get_moves_forward()
+        self.get_moves_left()
+        self.get_moves_right()
+
         return self.legal_moves
     
-    def is_clear_right(self):
-        return super().is_clear_right()
+    def get_moves_right(self):
+        return super().get_moves_right()
     
-    def is_clear_left(self):
-        return super().is_clear_left()
+    def get_moves_left(self):
+        return super().get_moves_left()
     
-    def is_clear_forward(self):
-        return super().is_clear_forward()
+    def get_moves_forward(self):
+        return super().get_moves_forward()
     
-    def is_clear_backward(self):
-        return super().is_clear_backward()
+    def get_moves_backward(self):
+        return super().get_moves_backward()
 
 class Bishop(Piece):
     def __init__(self, name, color, coordinate, board):
@@ -263,6 +189,18 @@ class Knight(Piece):
         super().__init__(name, color, coordinate, board)
 
            
+    def get_legal_moves(self):
+        
+        possible_moves = [(self.row+1,self.col+2,), (self.row+1,self.col-2,),
+                          (self.row-1,self.col+2,), (self.row-1,self.col-2,),
+                           (self.row+2,self.col-1,), (self.row+2,self.col+1,),
+                            (self.row-2,self.col+1,), (self.row-2,self.col-1)]
+        
+        possible_moves = list(filter(is_in_bounds, possible_moves))
+
+        #for move in possible_moves:
+
+
 
 if __name__ == "__main__":
     pass
