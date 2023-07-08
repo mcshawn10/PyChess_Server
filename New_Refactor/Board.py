@@ -27,10 +27,16 @@ class Board:
                 color = self.colors[((row+col) % 2)]
                 pygame.draw.rect(self.screen, color, pygame.Rect(
                     col*self.squares, row*self.squares, self.squares, self.squares))
-                
+        pygame.draw.line(self.screen, (0,0,0), (512, 0), (512,512), width=4)     
+
+    def draw_player_turn(self):
+        text_font = pygame.font.SysFont("Arial", 30)
+        text = text_font.render("Player", True, (0,0,0)) 
+        self.screen.blit(text, (600, 200))
     def RUN(self):
 
         self.draw_board()
+        self.draw_player_turn()
         while True:
             # game loop
             
