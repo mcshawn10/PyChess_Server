@@ -2,11 +2,11 @@
 
 class Square:
 
-    def __init__(self, is_empty, P, coordinate, color):
+    def __init__(self, is_empty, coordinate):
         self.is_empty = is_empty 
-        self.piece = P
+        self.piece = None
         self.coordinate = coordinate
-        self.color = color
+        self.color = None
         
     def get_Piece(self):
         if not self.is_empty:
@@ -18,6 +18,8 @@ class Square:
             return self.piece.color
         else: return None
 
+    def draw_piece(self):
+        pass
 
 
 

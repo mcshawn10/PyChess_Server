@@ -1,6 +1,9 @@
 
 import pygame
 import sys
+from Piece import *
+from Square import Square
+
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -16,11 +19,24 @@ class Board:
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
         self.rxc = 8
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
-
+        self.PATH = r"C:\\Python\\WORTHY PROJECTS\\PyChess_Server\\chess_pieces\\"
         self.screen = pygame.display.set_mode((self.width, self.height))  # Setting the screen size
         self.screen.fill(pygame.Color((255, 228, 181)))  # intitally fills screen to be all tan color
         pygame.display.set_caption("PyChess")
-    
+
+        self.color_to_move = "white"
+        self.Pieces = {}
+
+        self.board_arr = [[Square(True, (y,x)) for x in range(self.rxc)] for y in range(self.rxc)]
+        self.board_arr[1] = [i.piece := Pawn("bp", "black", (1,j), self.board_arr) for i in self.board_arr[1] for j in range(self.rxc)]
+        #self.board_arr[1] = [i.Piece = Pawn("bp", "black",(1, i), self.board_arr ) for i in range(self.rxc)]
+
+    def import_pieces(self):        
+        pieces = ['bB', 'bK', 'bN', 'bp', 'bQ', 'bR','wB', 'wK', 'wN', 'wp', 'wQ', 'wR']
+        for piece in pieces:
+            self.Pieces[piece] = pygame.transform.scale(pygame.image.load(
+                self.PATH + piece + ".png"), (self.squares, self.squares))
+            
     def draw_board(self):        
         for row in range(self.rxc):
             for col in range(self.rxc):
@@ -33,10 +49,24 @@ class Board:
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render("Player", True, (0,0,0)) 
         self.screen.blit(text, (600, 200))
+
+    def draw_pieces(self):
+        for row in range(self.rxc):
+            for col in range(self.rxc):
+                piece = self.board_arr[row][col].get_Piece()
+                '''blit piece.image'''
+                if piece == None: continue
+                elif piece.name != '.':
+                    self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
+                                                       self.squares, self.squares))
     def RUN(self):
 
         self.draw_board()
         self.draw_player_turn()
+        self.import_pieces()
+        self.draw_pieces()
+
+
         while True:
             # game loop
             

@@ -266,6 +266,14 @@ class Knight(Piece):
             if self.move_is_legal(self.board[move[0]][move[1]]):
                 self.legal_moves.append(move)
 
+class Empty():
+    def __init__(self, pos):
+        self.pos = pos
+        self.name = "."
+        self.color = "."
+    
+    def move_is_legal(self, next_pos):
+        return False
 
 if __name__ == "__main__":
     pass
