@@ -28,7 +28,15 @@ class Board:
         self.Pieces = {}
 
         self.board_arr = [[Square(True, (y,x)) for x in range(self.rxc)] for y in range(self.rxc)]
-        self.board_arr[1] = [i.piece := Pawn("bp", "black", (1,j), self.board_arr) for i in self.board_arr[1] for j in range(self.rxc)]
+
+        for square in self.board_arr[1]:
+            for j in range(self.rxc):   
+                square.is_empty = False
+                square.piece = Pawn('bp',"black", (1,j), self.board_arr)
+        for square in self.board_arr[6]:
+            for j in range(self.rxc):   
+                square.is_empty = False
+                square.piece = Pawn('wp',"black", (6,j), self.board_arr)
         #self.board_arr[1] = [i.Piece = Pawn("bp", "black",(1, i), self.board_arr ) for i in range(self.rxc)]
 
     def import_pieces(self):        
@@ -54,7 +62,7 @@ class Board:
         for row in range(self.rxc):
             for col in range(self.rxc):
                 piece = self.board_arr[row][col].get_Piece()
-                '''blit piece.image'''
+                
                 if piece == None: continue
                 elif piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
