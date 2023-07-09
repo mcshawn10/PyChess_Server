@@ -18,6 +18,10 @@ class Piece:
         self.legal_moves = [] # list of coordinates
         self.theoretical_moves = []
 
+    def set_coordinate(self, row:int, col:int):
+        self.row = row
+        self.col = col
+        self.coordinate = (row, col)
     # def move_is_legal
     def get_legal_moves(self): # will be a list of tuples, or maybe a set?
         ''' 1. to get legal moves for each piece, the piece needs to have a board to reference
@@ -130,6 +134,9 @@ class King(Piece):
     def __init__(self, name, color, coordinate):
         super().__init__(name, color, coordinate)
 
+    def set_coordinate(self, row: int, col: int):
+        return super().set_coordinate(row, col)
+    
     def get_legal_moves(self): #king will have 8 moves, though it must fit in the constraints
         # so what's the easiest way to write the function? , pass in a next square?
         # but you have to iterate through each possible square to get a LIST
@@ -152,7 +159,9 @@ class King(Piece):
 class Queen(Piece):
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
-
+    def set_coordinate(self, row: int, col: int):
+        return super().set_coordinate(row, col)
+    
     def get_legal_moves(self):
         
         self.get_moves_backward()
@@ -172,7 +181,9 @@ class Pawn(Piece):
 
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
-
+    def set_coordinate(self, row: int, col: int):
+        return super().set_coordinate(row, col)
+    
     def get_legal_moves(self):
         self.legal_moves.clear()
         
@@ -215,6 +226,9 @@ class Rook(Piece):
 
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
+
+    def set_coordinate(self, row: int, col: int):
+        return super().set_coordinate(row, col)
         
     def get_legal_moves(self): # this is NOT the most efficient way to get the SMALLEST LIST
         self.get_moves_backward()
@@ -240,6 +254,9 @@ class Bishop(Piece):
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
 
+    def set_coordinate(self, row: int, col: int):
+        return super().set_coordinate(row, col)
+    
     def get_legal_moves(self):
         self.get_moves_NE()
         self.get_moves_NW()
@@ -251,6 +268,8 @@ class Knight(Piece):
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
 
+    def set_coordinate(self, row: int, col: int):
+        return super().set_coordinate(row, col)
            
     def get_legal_moves(self):
         
@@ -272,8 +291,7 @@ class Empty():
         self.name = "."
         self.color = "."
     
-    def move_is_legal(self, next_pos):
-        return False
+    
 
 if __name__ == "__main__":
     pass

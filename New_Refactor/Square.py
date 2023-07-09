@@ -1,5 +1,4 @@
 
-
 class Square:
 
     def __init__(self, is_empty, coordinate):

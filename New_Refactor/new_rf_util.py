@@ -1,7 +1,7 @@
-import Piece
-import Square
 
-def is_opposite_color(current: str, next_square:Square):
+
+
+def is_opposite_color(current: str, next_square):
     
     if current == "white" and next_square.get_Piece_color() == "black":
         return True
@@ -10,10 +10,11 @@ def is_opposite_color(current: str, next_square:Square):
         return True
 
     else: return False
-def opposite_move_color(color:str):
+def get_opposite_color(color:str):
     if color == "white":
         return "black"
-    else: return "white"   
+    else: return "white"
+
 # def recursive_linear()
 # def recursive_diagonal
 
