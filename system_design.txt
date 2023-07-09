@@ -46,3 +46,22 @@ recursive functions, DFS?
 - go forward, go back, go right, go left: each its own function?
 - for any direction, if the square is empty: add it to the list of legal moves, if theres a piece, check what color it is and determine
 to add it to the list of legal moves
+
+how to figure out what player turn it is?
+- we know that white starts, 
+- how to keep track if a player has moved?
+- but also you have to monitor selection, selection does not mean a piece is moving
+- and then if the move happens, we know that it's the other players turn
+
+first you have to know whose turn it is:
+- detect if mouse has been clicked 
+-> what got clicked? if not the color whose turn it is, then continue 
+- if its the corresponding color, then select that piece
+  if you click another piece of the same color, then deselect the current piece and select the one you just clicked
+  keep doing this until you click on an empty square or a piece that is another color
+
+  how do we save the clicks?
+
+  piece moving control flow:
+  - get the first click -> you still have to analyze this first click to determine if you can select it
+  - get the second click -> analyze again to determine if you move or if you select a different piece

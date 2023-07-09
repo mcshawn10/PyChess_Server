@@ -28,15 +28,9 @@ class Board:
         self.Pieces = {}
 
         self.board_arr = [[Square(True, (y,x)) for x in range(self.rxc)] for y in range(self.rxc)]
+        self.clicks = []
 
-        for square in self.board_arr[1]:
-            for j in range(self.rxc):   
-                square.is_empty = False
-                square.piece = Pawn('bp',"black", (1,j), self.board_arr)
-        for square in self.board_arr[6]:
-            for j in range(self.rxc):   
-                square.is_empty = False
-                square.piece = Pawn('wp',"black", (6,j), self.board_arr)
+        
         #self.board_arr[1] = [i.Piece = Pawn("bp", "black",(1, i), self.board_arr ) for i in range(self.rxc)]
 
     def import_pieces(self):        
@@ -57,6 +51,18 @@ class Board:
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render("Player", True, (0,0,0)) 
         self.screen.blit(text, (600, 200))
+        
+    def set_pieces(self):
+        for square in self.board_arr[1]:
+            for j in range(self.rxc):   
+                square.is_empty = False
+                square.piece = Pawn('bp',"black", (1,j), self.board_arr)
+        for square in self.board_arr[6]:
+            for j in range(self.rxc):   
+                square.is_empty = False
+                square.piece = Pawn('wp',"black", (6,j), self.board_arr)
+
+        
 
     def draw_pieces(self):
         for row in range(self.rxc):
@@ -66,13 +72,30 @@ class Board:
                 if piece == None: continue
                 elif piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
-                                                       self.squares, self.squares))
+                                                      self.squares, self.squares))
+    def what_was_clicked(self, row, col):
+        
+        p = self.board_arr[row][col]
+        if not p.is_empty:
+            return "empty"
+        else:
+            return p.get_Piece_color()
+
+    def get_pos(self, pos):
+        x, y = pos
+        row = y // self.squares
+        col = x // self.squares
+        return row, col  # get position of piece
+    
+    
+    
     def RUN(self):
 
         self.draw_board()
         self.draw_player_turn()
         self.import_pieces()
         self.draw_pieces()
+
 
 
         while True:
@@ -82,6 +105,26 @@ class Board:
                 if event.type == pygame.QUIT:  # command that makes the game quit
                     pygame.quit()
                     sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()                    
+                    row,col = self.get_pos(mouse_pos)
+                    color_clicked = self.what_was_clicked(row,col)
+                    
+                    if len(self.clicks==0 and color_clicked == self.color_to_move):
+                       
+                        self.clicks.append((row,col)) 
+                        #select the piece that was clicked
+
+                    elif len(self.clicks) == 1:
+                        if color_clicked == self.color_to_move:
+                            pass
+                            # deselect the current selected piece and select the new piece
+                            # clear out the clicks and append the new click
+                        
+                    elif len(self.clicks) == 2:
+                        pass # check whats going on
+                    else: continue
+                    
 
             clock.tick(60)  # clock running at 60 FPS
             pygame.display.flip()
