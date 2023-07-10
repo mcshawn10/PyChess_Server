@@ -14,6 +14,7 @@ class Board:
         self.TAN = (255, 228, 181)  # RGB color combination
         self.BROWN = (139, 101, 8)
         self.BLUE = (192,192,192)
+        self.GREEN = (102,204,0)
         self.rxc = 8  # dimensions of row and columns (9)
         self.height = 512  # dimensions of the board (constants)
         self.width = 800
@@ -70,7 +71,7 @@ class Board:
             square.is_empty = False
             square.piece = Pawn('wp',"white", (6,j), self.board_arr)
             square.piece.set_coordinate(6,j)
-            print(square.piece.coordinate)
+            
         
         for square in self.board_arr[7]: square.is_empty = False
         for square in self.board_arr[0]: square.is_empty = False
@@ -122,13 +123,13 @@ class Board:
     def highlight_square(self, pos:tuple):
         r,c = pos[0],pos[1]
 
-        pygame.draw.rect(self.screen, (255,255,51), (c*self.squares, r*self.squares, self.squares, self.squares), 3)
+        pygame.draw.rect(self.screen, self.GREEN, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
         pygame.display.flip()
 
     def draw_moves(self, moves:list):
         for move in moves:
 
-            pygame.draw.circle(self.screen, self.BLUE, (move[1]*70, move[0]*70), 10)
+            pygame.draw.circle(self.screen, self.GREEN, ((move[1]*64)+32, (move[0]*64)+32), 10)
             
     def move_piece(self):
         pass
@@ -171,8 +172,9 @@ class Board:
                         
 
                     elif len(self.clicks) == 1:
-                        if color_clicked == self.color_to_move:
+                        if color_clicked == self.color_to_move: # did you click the same piece or a new piece
                             pass
+                            self.clicks.append((row,col))
                             # what if you click the same piece?
                             # deselect the current selected piece and select the new piece
                             # clear out the clicks and append the new click
