@@ -64,4 +64,6 @@ first you have to know whose turn it is:
 
   piece moving control flow:
   - get the first click -> you still have to analyze this first click to determine if you can select it
+  first click: 
+  - is the piece clicked on the same color as the players turn? if yes then select if not then continue
   - get the second click -> analyze again to determine if you move or if you select a different piece

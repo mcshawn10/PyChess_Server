@@ -32,7 +32,7 @@ class Board:
         self.board_arr = [[Square(True, (y,x)) for x in range(self.rxc)] for y in range(self.rxc)]
         self.clicks = []
 
-        print("reaches")
+        
 
         
 
@@ -63,7 +63,7 @@ class Board:
         for square in self.board_arr[6]:
             for j in range(self.rxc):   
                 square.is_empty = False
-                square.piece = Pawn('wp',"black", (6,j), self.board_arr)
+                square.piece = Pawn('wp',"white", (6,j), self.board_arr)
         
         for square in self.board_arr[7]: square.is_empty = False
         for square in self.board_arr[0]: square.is_empty = False
@@ -101,7 +101,7 @@ class Board:
     def what_was_clicked(self, row, col):
         
         p = self.board_arr[row][col]
-        if not p.is_empty:
+        if p.is_empty:
             return "empty"
         else:
             return p.get_Piece_color()
@@ -147,15 +147,18 @@ class Board:
                     mouse_pos = pygame.mouse.get_pos()                    
                     row,col = self.get_pos(mouse_pos)
                     color_clicked = self.what_was_clicked(row,col)
-                    
-                    if len(self.clicks==0) and color_clicked == self.color_to_move:
+
+                    print(row, col)
+                    print(len(self.clicks))
+                    print(color_clicked)
+                    if len(self.clicks)==0 and color_clicked == self.color_to_move:
                         piece_clicked = self.board_arr[row][col].get_Piece()
                         self.clicks.append((row,col)) 
                         # select the piece that was clicked
                         self.highlight_square((row, col))
                         # highlight the piece and draw dot on available moves
                         self.draw_moves(piece_clicked.get_legal_moves())
-
+                        print("reaches")
                     elif len(self.clicks) == 1:
                         if color_clicked == self.color_to_move:
                             pass

@@ -189,7 +189,9 @@ class Pawn(Piece):
         
         if self.color == "white":
             self.get_pawn_captures()
-            if self.row == 6: self.legal_moves.append((self.row+1, self.col), (self.row+2, self.col))
+            if self.row == 6: 
+                self.legal_moves.append((self.row+1, self.col))
+                self.legal_moves.append((self.row+2, self.col))
                 
             else: self.legal_moves.append((self.row+1, self.col))
                 
