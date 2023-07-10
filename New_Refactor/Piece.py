@@ -135,7 +135,7 @@ class King(Piece):
         super().__init__(name, color, coordinate)
 
     def set_coordinate(self, row: int, col: int):
-        return super().set_coordinate(row, col)
+        super().set_coordinate(row, col)
     
     def get_legal_moves(self): #king will have 8 moves, though it must fit in the constraints
         # so what's the easiest way to write the function? , pass in a next square?
@@ -182,24 +182,25 @@ class Pawn(Piece):
     def __init__(self, name, color, coordinate, board):
         super().__init__(name, color, coordinate, board)
     def set_coordinate(self, row: int, col: int):
-        return super().set_coordinate(row, col)
+        super().set_coordinate(row, col)
     
     def get_legal_moves(self):
         self.legal_moves.clear()
-        
-        if self.color == "white":
+        #assert self.col != 7
+        if self.color == "black":
             self.get_pawn_captures()
-            if self.row == 6: 
+            if self.row == 1: 
                 self.legal_moves.append((self.row+1, self.col))
                 self.legal_moves.append((self.row+2, self.col))
                 
             else: self.legal_moves.append((self.row+1, self.col))
                 
 
-        if self.color == "black":
+        if self.color == "white":
             self.get_pawn_captures()
-            if self.row == 1: self.legal_moves.append((self.row-1, self.col), (self.row-2, self.col))
-
+            if self.row == 6: 
+                self.legal_moves.append((self.row-1, self.col) )
+                self.legal_moves.append((self.row-2, self.col))
             else: self.legal_moves.append((self.row-1, self.col))
 
         return self.legal_moves

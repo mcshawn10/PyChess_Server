@@ -13,13 +13,13 @@ class Board:
     def __init__(self):
         self.TAN = (255, 228, 181)  # RGB color combination
         self.BROWN = (139, 101, 8)
-        self.BLUE = (0, 0, 255)
+        self.BLUE = (192,192,192)
         self.rxc = 8  # dimensions of row and columns (9)
         self.height = 512  # dimensions of the board (constants)
         self.width = 800
         self.squares = 512//8  # size of our board squares
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
-        self.rxc = 8
+        
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
         self.PATH = r"C:\\Python\\WORTHY PROJECTS\\PyChess_Server\\chess_pieces\\"
         self.screen = pygame.display.set_mode((self.width, self.height))  # Setting the screen size
@@ -56,14 +56,21 @@ class Board:
         self.screen.blit(text, (600, 200))
         
     def set_pieces(self):
-        for square in self.board_arr[1]:
-            for j in range(self.rxc):   
-                square.is_empty = False
-                square.piece = Pawn('bp',"black", (1,j), self.board_arr)
-        for square in self.board_arr[6]:
-            for j in range(self.rxc):   
-                square.is_empty = False
-                square.piece = Pawn('wp',"white", (6,j), self.board_arr)
+        
+        for j in range(self.rxc):  
+            
+            square = self.board_arr[1][j]
+            square.is_empty = False
+            square.piece = Pawn('bp',"black", (1,j), self.board_arr)
+            square.piece.set_coordinate(1,j)
+
+        
+        for j in range(self.rxc):   
+            square = self.board_arr[6][j]
+            square.is_empty = False
+            square.piece = Pawn('wp',"white", (6,j), self.board_arr)
+            square.piece.set_coordinate(6,j)
+            print(square.piece.coordinate)
         
         for square in self.board_arr[7]: square.is_empty = False
         for square in self.board_arr[0]: square.is_empty = False
@@ -121,8 +128,8 @@ class Board:
     def draw_moves(self, moves:list):
         for move in moves:
 
-            pygame.draw.circle(self.screen, self.BLUE, move, 20)
-    
+            pygame.draw.circle(self.screen, self.BLUE, (move[1]*70, move[0]*70), 10)
+            
     def move_piece(self):
         pass
 
@@ -146,19 +153,23 @@ class Board:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()                    
                     row,col = self.get_pos(mouse_pos)
+                    print(row, col)
                     color_clicked = self.what_was_clicked(row,col)
 
-                    print(row, col)
-                    print(len(self.clicks))
-                    print(color_clicked)
+
                     if len(self.clicks)==0 and color_clicked == self.color_to_move:
+                        
                         piece_clicked = self.board_arr[row][col].get_Piece()
+                        print(piece_clicked.coordinate)
+                        move_list = piece_clicked.get_legal_moves()
                         self.clicks.append((row,col)) 
                         # select the piece that was clicked
                         self.highlight_square((row, col))
                         # highlight the piece and draw dot on available moves
-                        self.draw_moves(piece_clicked.get_legal_moves())
-                        print("reaches")
+                        self.draw_moves(move_list)
+                        print(move_list)
+                        
+
                     elif len(self.clicks) == 1:
                         if color_clicked == self.color_to_move:
                             pass
