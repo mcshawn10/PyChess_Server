@@ -131,22 +131,33 @@ class Board:
 
             pygame.draw.circle(self.screen, self.GREEN, ((move[1]*64)+32, (move[0]*64)+32), 10)
             
-    def move_piece(self):
-        pass
+    def move_piece(self, old_pos:tuple, next_pos:tuple, piece_selected:Piece):
+        piece_selected.set_coordinate(next_pos[0], next_pos[1])
+        # you want to stop blitting on the current square
+        # blit to the new square
+        # old square is empty
+        # new square is not empty
+        self.board_arr[next_pos[0]][next_pos[1]].piece = self.board_arr[old_pos[0]][old_pos[1]].piece
+        self.board_arr[old_pos[0]][old_pos[1]].is_empty = True
+        self.board_arr[old_pos[0]][old_pos[1]].piece = None
+        self.board_arr[next_pos[0]][next_pos[1]].is_empty = False
+        self.board_arr[next_pos[0]][next_pos[1]].piece.set_coordinate(next_pos[0], next_pos[1])
+        
 
     def RUN(self):
 
         self.draw_board()
-        self.draw_player_turn()
+        
         self.import_pieces()
         self.set_pieces()
-        self.draw_pieces()
+        # self.draw_pieces()
 
 
 
         while True:
             # game loop
-            
+            self.draw_pieces()
+            self.draw_player_turn()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:  # command that makes the game quit
                     pygame.quit()
@@ -164,9 +175,7 @@ class Board:
                         print(piece_clicked.coordinate)
                         move_list = piece_clicked.get_legal_moves()
                         self.clicks.append((row,col)) 
-                        # select the piece that was clicked
                         self.highlight_square((row, col))
-                        # highlight the piece and draw dot on available moves
                         self.draw_moves(move_list)
                         print(move_list)
                         
@@ -180,8 +189,8 @@ class Board:
                             # clear out the clicks and append the new click
                             # remember the clean up work that you have to do in order to not crash
                         else:
-                            pass
-                            # then just move the piece
+                            
+                            self.move_piece(self.clicks[0], (row,col), piece_clicked)
                             self.clicks.clear()
                             self.color_to_move = get_opposite_color(self.color_to_move)
 
