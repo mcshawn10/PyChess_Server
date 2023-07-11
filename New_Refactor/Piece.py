@@ -39,7 +39,7 @@ class Piece:
     def get_moves_right(self):
 
         if self.col <=6:
-            for i in range(self.col, 8):
+            for i in range(self.col+1, 8):
                 if self.move_is_legal(self.board[self.row][i]):
                     self.legal_moves.append((self.row,i))
                     if not self.board[self.row][i].is_empty: break
@@ -49,7 +49,7 @@ class Piece:
     def get_moves_left(self):
     
         if self.col >=1:
-            for i in range(1, self.col):
+            for i in range(self.col-1, -1, -1):
                 
                 if self.move_is_legal(self.board[self.row][i]):
                     self.legal_moves.append((self.row,i))
@@ -59,9 +59,10 @@ class Piece:
 
     def get_moves_forward(self):
         
-        if self.row >=1:
-            for i in range(self.row, 0, -1):
+        if self.row >= 1:
+            for i in range(self.row-1, -1, -1):
                 if self.move_is_legal(self.board[i][self.col]):
+                    
                     self.legal_moves.append((i, self.col))
                     if not self.board[i][self.col].is_empty: break
                 
@@ -70,7 +71,7 @@ class Piece:
     def get_moves_backward(self):
         
         if self.row <= 6:
-            for i in range(self.row, 8):
+            for i in range(self.row+1, 8):
                 if self.move_is_legal(self.board[i][self.col]):
                     self.legal_moves.append((i, self.col))
                     if not self.board[i][self.col].is_empty: break
@@ -156,6 +157,7 @@ class King(Piece):
     def get_legal_moves(self): #king will have 8 moves, though it must fit in the constraints
         # so what's the easiest way to write the function? , pass in a next square?
         # but you have to iterate through each possible square to get a LIST
+        self.legal_moves.clear()
         possible_moves = [(self.row+1, self.col), (self.row+1, self.col-1), (self.row+1, self.col+1), 
                           (self.row, self.col+1), (self.row, self.col-1), 
                           (self.row-1, self.col+1), (self.row-1, self.col), (self.row-1, self.col-1)]
@@ -179,7 +181,7 @@ class Queen(Piece):
         return super().set_coordinate(row, col)
     
     def get_legal_moves(self):
-        
+        self.legal_moves.clear()
         self.get_moves_backward()
         self.get_moves_forward()
         self.get_moves_left()
@@ -246,6 +248,7 @@ class Rook(Piece):
         return super().set_coordinate(row, col)
         
     def get_legal_moves(self): # this is NOT the most efficient way to get the SMALLEST LIST
+        self.legal_moves.clear()
         self.get_moves_backward()
         self.get_moves_forward()
         self.get_moves_left()
@@ -273,7 +276,7 @@ class Bishop(Piece):
         return super().set_coordinate(row, col)
     
     def get_legal_moves(self):
-        
+        self.legal_moves.clear()
         self.get_diagonal_moves()
         return self.legal_moves
 
@@ -285,7 +288,7 @@ class Knight(Piece):
         return super().set_coordinate(row, col)
            
     def get_legal_moves(self):
-        
+        self.legal_moves.clear()
         possible_moves = [(self.row+1,self.col+2,), (self.row+1,self.col-2,),
                           (self.row-1,self.col+2,), (self.row-1,self.col-2,),
                           (self.row+2,self.col-1,), (self.row+2,self.col+1,),
