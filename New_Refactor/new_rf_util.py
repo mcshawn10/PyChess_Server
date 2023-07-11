@@ -2,7 +2,7 @@
 
 
 def is_opposite_color(current: str, next_square):
-    print(type(next_square))
+    
     next_color = next_square.get_Piece_color()
     if current == "white" and next_color == "black":
         return True
@@ -21,6 +21,7 @@ def get_opposite_color(color:str):
 
 def is_in_bounds(coordinate:tuple):
     if coordinate[0] >= 0 and coordinate[0] < 8 and coordinate[1] >= 0 and coordinate[1] < 8:
+        
         return True
     else: return False
 

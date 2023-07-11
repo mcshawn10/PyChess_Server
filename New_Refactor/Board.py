@@ -47,11 +47,12 @@ class Board:
         for row in range(self.rxc):
             for col in range(self.rxc):
                 color = self.colors[((row+col) % 2)]
-                pygame.draw.rect(self.screen, color, pygame.Rect(
-                    col*self.squares, row*self.squares, self.squares, self.squares))
+                pygame.draw.rect(self.screen, color, 
+                                 pygame.Rect(col*self.squares, row*self.squares, self.squares, self.squares))
         pygame.draw.line(self.screen, (0,0,0), (512, 0), (512,512), width=4)     
 
     def draw_player_turn(self):
+        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((512, 0, self.width-512, self.height )))
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render(f"{self.color_to_move} to play", True, (0,0,0)) 
         self.screen.blit(text, (600, 200))
@@ -166,19 +167,19 @@ class Board:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()                    
                     row,col = self.get_pos(mouse_pos)
-                    print(row, col)
+                    
                     color_clicked = self.what_was_clicked(row,col)
 
 
                     if len(self.clicks)==0 and color_clicked == self.color_to_move:
                         
                         piece_clicked = self.board_arr[row][col].get_Piece()
-                        print(piece_clicked.coordinate)
+                        
                         move_list = piece_clicked.get_legal_moves()
                         self.clicks.append((row,col)) 
                         self.highlight_square((row, col))
                         self.draw_moves(move_list)
-                        print(move_list)
+                        
                         
 
                     elif len(self.clicks) == 1:

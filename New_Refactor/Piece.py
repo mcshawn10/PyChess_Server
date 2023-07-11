@@ -42,7 +42,7 @@ class Piece:
             for i in range(self.col, 8):
                 if self.move_is_legal(self.board[self.row][i]):
                     self.legal_moves.append((self.row,i))
-                    if not self.board[self.row][i].is_emtpy: break
+                    if not self.board[self.row][i].is_empty: break
 
                 else: break
 
@@ -53,7 +53,7 @@ class Piece:
                 
                 if self.move_is_legal(self.board[self.row][i]):
                     self.legal_moves.append((self.row,i))
-                    if not self.board[self.row][i].is_emtpy: break
+                    if not self.board[self.row][i].is_empty: break
 
                 else: break
 
@@ -63,7 +63,7 @@ class Piece:
             for i in range(self.row, 0, -1):
                 if self.move_is_legal(self.board[i][self.col]):
                     self.legal_moves.append((i, self.col))
-                    if not self.board[i][self.col].is_emtpy: break
+                    if not self.board[i][self.col].is_empty: break
                 
                 else: break
 
@@ -73,7 +73,7 @@ class Piece:
             for i in range(self.row, 8):
                 if self.move_is_legal(self.board[i][self.col]):
                     self.legal_moves.append((i, self.col))
-                    if not self.board[i][self.col].is_emtpy: break
+                    if not self.board[i][self.col].is_empty: break
                 else: break # breaks for same color but not for opposite
     
     def get_moves_NE(self):
@@ -81,25 +81,25 @@ class Piece:
         col = self.col
 
         if self.row >=1 and self.col <=6: #probably need to be modified granted that a piece should be able to move to 0,0
-            while row >=0 and col <=7:
+            while row > 0 and col < 7:
                 row -= 1
                 col += 1
                 if self.move_is_legal(self.board[row][col]):
                     self.legal_moves.append((row, col))
-                    if not self.board[row][col].is_emtpy: break
+                    if not self.board[row][col].is_empty: break
                 else: break
 
     def get_moves_NW(self):
         row = self.row
         col = self.col
 
-        if self.row >=1 and self.col >=6:
-            while row >=0 and col <=7:
+        if self.row >=1 and self.col <8:
+            while row >=0 and col <8:
                 row -= 1
                 col -= 1
                 if self.move_is_legal(self.board[row][col]):
                     self.legal_moves.append((row, col))
-                    if not self.board[row][col].is_emtpy: break
+                    if not self.board[row][col].is_empty: break
                 else: break
 
     def get_moves_SE(self):
@@ -107,12 +107,12 @@ class Piece:
         col = self.col
 
         if self.row <=6 and self.col <=6: #probably need to be modified granted that a piece should be able to move to 0,0
-            while row >=7 and col <=7:
+            while row <7 and col <7:
                 row += 1
                 col += 1
                 if self.move_is_legal(self.board[row][col]):
                     self.legal_moves.append((row, col))
-                    if not self.board[row][col].is_emtpy: break
+                    if not self.board[row][col].is_empty: break
                 else: break
                                             
     
@@ -126,9 +126,25 @@ class Piece:
                 col -= 1
                 if self.move_is_legal(self.board[row][col]):
                     self.legal_moves.append((row, col))
-                    if not self.board[row][col].is_emtpy: break
+                    if not self.board[row][col].is_empty: break
                 else: break
+    def get_diagonal_moves(self):
 
+        self.get_moves_NE()
+        self.get_moves_NW()
+        self.get_moves_SE()
+        self.get_moves_SW()
+        '''
+        possible_moves = self.legal_moves
+        print(self.legal_moves)
+        self.legal_moves.clear()
+        
+        
+        # now filter out what is legal move ie same not same colors
+        for move in possible_moves:
+            if self.move_is_legal(self.board[move[0]][move[1]]):
+                self.legal_moves.append(move)'''
+        return self.legal_moves
 class King(Piece):
 
     def __init__(self, name, color, coordinate):
@@ -169,13 +185,9 @@ class Queen(Piece):
         self.get_moves_left()
         self.get_moves_right()
 
-        self.get_moves_NE()
-        self.get_moves_NW()
-        self.get_moves_SE()
-        self.get_moves_SW()
+        
+        self.get_diagonal_moves()
         return self.legal_moves
-        ''' queen moves linearly and diagonally
-            so in order for the move to be legal, it cant move through anyone -> recursive function '''
 
 class Pawn(Piece):
 
@@ -261,10 +273,8 @@ class Bishop(Piece):
         return super().set_coordinate(row, col)
     
     def get_legal_moves(self):
-        self.get_moves_NE()
-        self.get_moves_NW()
-        self.get_moves_SE()
-        self.get_moves_SW()
+        
+        self.get_diagonal_moves()
         return self.legal_moves
 
 class Knight(Piece):
