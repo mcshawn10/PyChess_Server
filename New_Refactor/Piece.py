@@ -30,9 +30,9 @@ class Piece:
     
     def move_is_legal(self, destination_square:Square): # destination_square could have remained tuple ?
         # will return the legality, is there a same color piece blocking the selected piece?
-        is_opposite_color = is_opposite_color(self.color, destination_square.get_Piece_color())
+        is_opp_color = is_opposite_color(self.color, destination_square)
         
-        if destination_square.is_empty or is_opposite_color:
+        if destination_square.is_empty or is_opp_color:
             return True
         else: return False
 
@@ -288,6 +288,7 @@ class Knight(Piece):
             if self.move_is_legal(self.board[move[0]][move[1]]):
                 self.legal_moves.append(move)
 
+        return self.legal_moves
 class Empty():
     def __init__(self, pos):
         self.pos = pos

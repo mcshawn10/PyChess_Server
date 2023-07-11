@@ -2,11 +2,12 @@
 
 
 def is_opposite_color(current: str, next_square):
-    
-    if current == "white" and next_square.get_Piece_color() == "black":
+    print(type(next_square))
+    next_color = next_square.get_Piece_color()
+    if current == "white" and next_color == "black":
         return True
 
-    elif current == "black" and next_square.get_Piece_color() == "white":
+    elif current == "black" and next_color == "white":
         return True
 
     else: return False

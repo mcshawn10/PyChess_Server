@@ -85,14 +85,14 @@ class Board:
         self.board_arr[0][3].piece = Queen('bQ', "black", (0,3), self.board_arr)
         self.board_arr[0][4].piece = Queen('bK', "black", (0,4), self.board_arr)
 
-        self.board_arr[7][0].piece = Rook('wR', "white", (0,0), self.board_arr)
-        self.board_arr[7][7].piece = Rook('wR', "white", (0,7), self.board_arr)
-        self.board_arr[7][1].piece = Knight('wN', "white", (0,1), self.board_arr)
-        self.board_arr[7][6].piece = Knight('wN', "white", (0,6), self.board_arr)
-        self.board_arr[7][2].piece = Bishop('wB', "white", (0,2), self.board_arr)
-        self.board_arr[7][5].piece = Bishop('wB', "white", (0,5), self.board_arr)
-        self.board_arr[7][3].piece = Queen('wQ', "white", (0,3), self.board_arr)
-        self.board_arr[7][4].piece = Queen('wK', "white", (0,4), self.board_arr)
+        self.board_arr[7][0].piece = Rook('wR', "white", (7,0), self.board_arr)
+        self.board_arr[7][7].piece = Rook('wR', "white", (7,7), self.board_arr)
+        self.board_arr[7][1].piece = Knight('wN', "white", (7,1), self.board_arr)
+        self.board_arr[7][6].piece = Knight('wN', "white", (7,6), self.board_arr)
+        self.board_arr[7][2].piece = Bishop('wB', "white", (7,2), self.board_arr)
+        self.board_arr[7][5].piece = Bishop('wB', "white", (7,5), self.board_arr)
+        self.board_arr[7][3].piece = Queen('wQ', "white", (7,3), self.board_arr)
+        self.board_arr[7][4].piece = Queen('wK', "white", (7,4), self.board_arr)
     
 
         
@@ -143,7 +143,8 @@ class Board:
         self.board_arr[next_pos[0]][next_pos[1]].is_empty = False
         self.board_arr[next_pos[0]][next_pos[1]].piece.set_coordinate(next_pos[0], next_pos[1])
         
-
+    
+                        
     def RUN(self):
 
         self.draw_board()
@@ -157,7 +158,7 @@ class Board:
         while True:
             # game loop
             self.draw_pieces()
-            self.draw_player_turn()
+            self.draw_player_turn() 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:  # command that makes the game quit
                     pygame.quit()
@@ -188,11 +189,13 @@ class Board:
                             # deselect the current selected piece and select the new piece
                             # clear out the clicks and append the new click
                             # remember the clean up work that you have to do in order to not crash
-                        else:
+                        elif (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)
+                            self.draw_board()
                             self.clicks.clear()
                             self.color_to_move = get_opposite_color(self.color_to_move)
+                            self.board_arr[row][col].color = piece_clicked.color
 
                     else: continue
                     
