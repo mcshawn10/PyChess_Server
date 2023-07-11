@@ -5,7 +5,6 @@ from Piece import *
 from Square import *
 from new_rf_util import *
 
-
 pygame.init()
 clock = pygame.time.Clock()
 class Board:
@@ -107,6 +106,12 @@ class Board:
                 elif piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                       self.squares, self.squares))
+    def undo_highlight(self, pos):
+        r,c = pos[0],pos[1]
+        color = self.colors[((r+c) % 2)]
+        pygame.draw.rect(self.screen, color, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
+        pygame.display.flip()
+
     def what_was_clicked(self, row, col):
         
         p = self.board_arr[row][col]
@@ -143,7 +148,15 @@ class Board:
         self.board_arr[old_pos[0]][old_pos[1]].piece = None
         self.board_arr[next_pos[0]][next_pos[1]].is_empty = False
         self.board_arr[next_pos[0]][next_pos[1]].piece.set_coordinate(next_pos[0], next_pos[1])
-        
+
+    def get_piece_clicked(self, row, col ):
+        self.draw_board()
+        piece_clicked = self.board_arr[row][col].get_Piece()
+                        
+        move_list = piece_clicked.get_legal_moves()
+        self.clicks.append((row,col)) 
+        self.highlight_square((row, col))
+        self.draw_moves(move_list) 
     
                         
     def RUN(self):
@@ -183,13 +196,23 @@ class Board:
                         
 
                     elif len(self.clicks) == 1:
-                        if color_clicked == self.color_to_move: # did you click the same piece or a new piece
-                            pass
-                            self.clicks.append((row,col))
-                            # what if you click the same piece?
-                            # deselect the current selected piece and select the new piece
-                            # clear out the clicks and append the new click
-                            # remember the clean up work that you have to do in order to not crash
+
+                        if color_clicked == self.color_to_move:
+                            self.undo_highlight(self.clicks[0]) # did you click the same piece or a new piece
+                            if (row, col) in self.clicks: # if you clicked the same guy
+                                self.draw_board()
+
+                            else:
+                                self.draw_board()
+                                self.clicks.clear()
+                                piece_clicked = self.board_arr[row][col].get_Piece()
+                        
+                                move_list = piece_clicked.get_legal_moves()
+                                self.clicks.append((row,col)) 
+                                self.highlight_square((row, col))
+                                self.draw_moves(move_list)
+                                # highlight the new piece
+                                # draw the new moves
                         elif (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)

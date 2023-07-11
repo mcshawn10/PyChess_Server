@@ -2,6 +2,7 @@
 
 import Square
 from new_rf_util import *
+
 class Piece:
     def __init__(self, name, color, coordinate, board): # pos should NOT be tuple
         
@@ -121,8 +122,8 @@ class Piece:
         row = self.row
         col = self.col
 
-        if self.row <=6 and self.col >1: #probably need to be modified granted that a piece should be able to move to 0,0
-            while row >=7 and col >= 0:
+        if self.row <=6 and self.col >=1: #probably need to be modified granted that a piece should be able to move to 0,0
+            while row <7 and col > 0:
                 row += 1
                 col -= 1
                 if self.move_is_legal(self.board[row][col]):
