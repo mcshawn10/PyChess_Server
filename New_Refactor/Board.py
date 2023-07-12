@@ -31,6 +31,7 @@ class Board:
 
         self.board_arr = [[Square(True, (y,x)) for x in range(self.rxc)] for y in range(self.rxc)]
         self.clicks = []
+        self.current_move_list = []
 
         
 
@@ -157,7 +158,14 @@ class Board:
         self.clicks.append((row,col)) 
         self.highlight_square((row, col))
         self.draw_moves(move_list) 
-    
+
+    def undo_move_dots(self):
+        for s in self.current_move_list:
+            color = self.colors[((s[0]+s[1]) % 2)]
+            pygame.draw.rect(self.screen, color, 
+                                pygame.Rect(s[1]*self.squares, s[0]*self.squares, self.squares, self.squares))
+
+     
                         
     def RUN(self):
 
@@ -189,6 +197,7 @@ class Board:
                         piece_clicked = self.board_arr[row][col].get_Piece()
                         
                         move_list = piece_clicked.get_legal_moves()
+                        self.current_move_list = move_list
                         self.clicks.append((row,col)) 
                         self.highlight_square((row, col))
                         self.draw_moves(move_list)
@@ -203,11 +212,13 @@ class Board:
                                 self.draw_board()
 
                             else:
-                                self.draw_board()
+                                #self.draw_board()
+                                self.undo_move_dots()
                                 self.clicks.clear()
                                 piece_clicked = self.board_arr[row][col].get_Piece()
                         
                                 move_list = piece_clicked.get_legal_moves()
+                                self.current_move_list = move_list
                                 self.clicks.append((row,col)) 
                                 self.highlight_square((row, col))
                                 self.draw_moves(move_list)
@@ -220,6 +231,7 @@ class Board:
                             self.clicks.clear()
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
+                            self.current_move_list.clear()
 
                     else: continue
                     
