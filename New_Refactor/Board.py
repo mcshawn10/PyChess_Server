@@ -15,9 +15,9 @@ class Board:
         self.BLUE = (192,192,192)
         self.GREEN = (102,204,0)
         self.rxc = 8  # dimensions of row and columns (9)
-        self.height = 512  # dimensions of the board (constants)
-        self.width = 800
-        self.squares = 512//8  # size of our board squares
+        self.height = 640  # dimensions of the board (constants) 512
+        self.width = 900
+        self.squares = 640//8  # size of our board squares
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
         
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
@@ -49,13 +49,13 @@ class Board:
                 color = self.colors[((row+col) % 2)]
                 pygame.draw.rect(self.screen, color, 
                                  pygame.Rect(col*self.squares, row*self.squares, self.squares, self.squares))
-        pygame.draw.line(self.screen, (0,0,0), (512, 0), (512,512), width=4)     
+        pygame.draw.line(self.screen, (0,0,0), (self.height, 0), (self.height,self.height), width=4)     
 
     def draw_player_turn(self):
-        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((512, 0, self.width-512, self.height )))
+        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((self.height, 0, self.width-self.height, self.height )))
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render(f"{self.color_to_move} to play", True, (0,0,0)) 
-        self.screen.blit(text, (600, 200))
+        self.screen.blit(text, (700, 200))
         
     def set_pieces(self):
         
@@ -136,7 +136,7 @@ class Board:
     def draw_moves(self, moves:list):
         for move in moves:
 
-            pygame.draw.circle(self.screen, self.GREEN, ((move[1]*64)+32, (move[0]*64)+32), 10)
+            pygame.draw.circle(self.screen, self.GREEN, ((move[1]*self.squares)+40, (move[0]*self.squares)+40), 15)
             
     def move_piece(self, old_pos:tuple, next_pos:tuple, piece_selected:Piece):
         piece_selected.set_coordinate(next_pos[0], next_pos[1])
