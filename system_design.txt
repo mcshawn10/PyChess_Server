@@ -5,3 +5,73 @@ we need to be able to send the move information from the server to handle_client
 essentially, this is all we're doing, sending this information from one end to the other
 
 whats the most effective way to be able to have valid moves? especially for a minimax AI?
+
+bugs to fix:
+- knight can take own pieces
+- checkmate
+- move legality as a whole?
+
+
+Piece:
+- each piece has certain legal moves; get legal moves()  
+- is it the players turn?, can you move the piece? is_movable
+- is the piece selected? select, deselect -> what constraints are there that would make a piece selectable?
+- each piece should have a member list of legal moves
+
+- should pieces take care of their own move legality?
+
+cell:
+- is the cell empty?
+- if not, what piece is in it?
+
+board:
+- comprised of cells 
+- is this the game engine? -> probably should move the engine away from the board, since the board is an object
+
+screen:
+- holds the board
+- tells whose move it is
+- tracks time, and move number?
+
+engine:
+- the rules
+- will determine that the piece may move there?
+- as far as piece movement, bishop, queen, rook all have to check recursively if their path are clear,
+- should we create a get_theoretical_moves and get_legal_moves, theoretical gets the the theoretical, and legal filters out that list?
+- the recursive function would actually take care of the issues, it would just stop at whatever piece is blocking
+- so who should be in charge of the recursive function?
+
+
+recursive functions, DFS?
+- go forward, go back, go right, go left: each its own function?
+- for any direction, if the square is empty: add it to the list of legal moves, if theres a piece, check what color it is and determine
+to add it to the list of legal moves
+
+how to figure out what player turn it is?
+- we know that white starts, 
+- how to keep track if a player has moved?
+- but also you have to monitor selection, selection does not mean a piece is moving
+- and then if the move happens, we know that it's the other players turn
+
+first you have to know whose turn it is:
+- detect if mouse has been clicked 
+-> what got clicked? if not the color whose turn it is, then continue 
+- if its the corresponding color, then select that piece
+  if you click another piece of the same color, then deselect the current piece and select the one you just clicked
+  keep doing this until you click on an empty square or a piece that is another color
+
+  how do we save the clicks?
+
+  piece moving control flow:
+  - get the first click -> you still have to analyze this first click to determine if you can select it
+  first click: 
+  - is the piece clicked on the same color as the players turn? if yes then select if not then continue
+  - get the second click -> analyze again to determine if you move or if you select a different piece
+
+  what's left?:
+  - castling
+  - king in check
+  - checkmate 
+  - minimax
+  - networking: client/server
+  - select/deselect
