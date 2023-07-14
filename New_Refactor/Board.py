@@ -165,7 +165,19 @@ class Board:
             pygame.draw.rect(self.screen, color, 
                                 pygame.Rect(s[1]*self.squares, s[0]*self.squares, self.squares, self.squares))
 
-     
+    
+    def redraw_piece(self, piece:Piece, old_pos:tuple):
+        old_row,old_col = old_pos[0], old_pos[1]
+        color = self.colors[((old_row+old_col) % 2)]
+
+        pygame.draw.rect(self.screen, color, 
+                                 pygame.Rect(old_col*self.squares, old_row*self.squares, self.squares, self.squares))
+
+        self.screen.blit(self.Pieces[piece.name], pygame.Rect(piece.col*self.squares, piece.row*self.squares,
+                                                      self.squares, self.squares))
+
+        pygame.display.flip()
+
                         
     def RUN(self):
 
@@ -227,7 +239,8 @@ class Board:
                         elif (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)
-                            self.draw_board()
+                            self.undo_move_dots()
+                            self.redraw_piece(piece_clicked, self.clicks[0])
                             self.clicks.clear()
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
