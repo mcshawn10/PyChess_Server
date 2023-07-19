@@ -33,7 +33,8 @@ class Board:
         self.clicks = []
         self.current_move_list = []
 
-        
+        self.BlackKing = None
+        self.WhiteKing = None
 
         
 
@@ -178,7 +179,20 @@ class Board:
 
         pygame.display.flip()
 
-                        
+    def display_king_check(self):
+        pass
+
+    def determine_white_king_check(self, attackingPiece:Piece, new_pos:tuple):
+        pass
+        # get blacks legal moves from the new pos and see if king is in the list
+        
+
+    def determine_black_king_check(self):
+        # get white legal moves from the new pos and see if king is in the list
+        pass
+        
+        
+
     def RUN(self):
 
         self.draw_board()

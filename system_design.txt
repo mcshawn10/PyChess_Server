@@ -75,3 +75,17 @@ first you have to know whose turn it is:
   - minimax
   - networking: client/server
   - select/deselect
+
+  king check:
+  - diagonal pieces, when moved, need to check their lines and see if king is in the line of figure
+  - linear pices, when moved, need to check their lines and see if king is in line of fire 
+  - same for knights 
+  - all pieces need to check their next moves and see if it puts the king in check
+  - kings have to be able to check if other squares are under attack, if it has no available squares, then checkmate
+  - so whats the easiest way to check all these things? 
+
+
+  take a square
+  determine what piece is on it
+  based on what piece, find its next moves
+  if the king is in the list of legal moves, then king in check
