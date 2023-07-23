@@ -89,3 +89,6 @@ first you have to know whose turn it is:
   determine what piece is on it
   based on what piece, find its next moves
   if the king is in the list of legal moves, then king in check
+
+  current way for checking if king in check is quick and cheap 
+  Now, have to be able to determine if move puts king in check

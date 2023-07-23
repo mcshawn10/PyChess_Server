@@ -184,7 +184,12 @@ class Board:
     def display_king_check(self, pos:tuple):
         r,c = pos[0],pos[1]
 
-        pygame.draw.rect(self.screen, self.RED, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
+        pygame.draw.rect(self.screen, self.RED, (c*self.squares, r*self.squares, self.squares, self.squares), 5)
+
+        text_font = pygame.font.SysFont("Arial", 30)
+        text = text_font.render(f"{self.color_to_move} King in check!!", True, (0,0,0)) 
+        self.screen.blit(text, (700, 400))
+
         pygame.display.flip()
 
     def determine_white_king_check(self, attackingPiece:Piece):
