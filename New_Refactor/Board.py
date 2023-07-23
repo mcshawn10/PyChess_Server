@@ -14,6 +14,7 @@ class Board:
         self.BROWN = (139, 101, 8)
         self.BLUE = (192,192,192)
         self.GREEN = (102,204,0)
+        self.RED = (255,0,0)
         self.rxc = 8  # dimensions of row and columns (9)
         self.height = 640  # dimensions of the board (constants) 512
         self.width = 900
@@ -85,7 +86,7 @@ class Board:
         self.board_arr[0][2].piece = Bishop('bB', "black", (0,2), self.board_arr)
         self.board_arr[0][5].piece = Bishop('bB', "black", (0,5), self.board_arr)
         self.board_arr[0][3].piece = Queen('bQ', "black", (0,3), self.board_arr)
-        self.board_arr[0][4].piece = Queen('bK', "black", (0,4), self.board_arr)
+        self.board_arr[0][4].piece = King('bK', "black", (0,4), self.board_arr)
 
         self.board_arr[7][0].piece = Rook('wR', "white", (7,0), self.board_arr)
         self.board_arr[7][7].piece = Rook('wR', "white", (7,7), self.board_arr)
@@ -94,10 +95,11 @@ class Board:
         self.board_arr[7][2].piece = Bishop('wB', "white", (7,2), self.board_arr)
         self.board_arr[7][5].piece = Bishop('wB', "white", (7,5), self.board_arr)
         self.board_arr[7][3].piece = Queen('wQ', "white", (7,3), self.board_arr)
-        self.board_arr[7][4].piece = Queen('wK', "white", (7,4), self.board_arr)
+        self.board_arr[7][4].piece = King('wK', "white", (7,4), self.board_arr)
     
 
-        
+    def draw_king_check(self):
+        pass    
 
     def draw_pieces(self):
         for row in range(self.rxc):
@@ -114,7 +116,7 @@ class Board:
         pygame.draw.rect(self.screen, color, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
         pygame.display.flip()
 
-    def what_was_clicked(self, row, col):
+    def GetColorClicked(self, row, col):
         
         p = self.board_arr[row][col]
         if p.is_empty:
@@ -179,17 +181,26 @@ class Board:
 
         pygame.display.flip()
 
-    def display_king_check(self):
-        pass
+    def display_king_check(self, pos:tuple):
+        r,c = pos[0],pos[1]
 
-    def determine_white_king_check(self, attackingPiece:Piece, new_pos:tuple):
-        pass
-        # get blacks legal moves from the new pos and see if king is in the list
+        pygame.draw.rect(self.screen, self.RED, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
+        pygame.display.flip()
+
+    def determine_white_king_check(self, attackingPiece:Piece):
+        moves = attackingPiece.get_legal_moves()
+        # if king in moves, then king in check
+        for move in moves:
+            if type(self.board_arr[move[0]][move[1]].get_Piece()) == King:
+                self.display_king_check(move)
         
 
-    def determine_black_king_check(self):
-        # get white legal moves from the new pos and see if king is in the list
-        pass
+    def determine_black_king_check(self, attackingPiece:Piece):
+        moves = attackingPiece.get_legal_moves()
+        # if king in moves, then king in check
+        for move in moves:
+            if type(self.board_arr[move[0]][move[1]].get_Piece()) == King:
+                self.display_king_check(move)
         
         
 
@@ -215,7 +226,7 @@ class Board:
                     mouse_pos = pygame.mouse.get_pos()                    
                     row,col = self.get_pos(mouse_pos)
                     
-                    color_clicked = self.what_was_clicked(row,col)
+                    color_clicked = self.GetColorClicked(row,col)
 
 
                     if len(self.clicks)==0 and color_clicked == self.color_to_move:
@@ -256,6 +267,8 @@ class Board:
                             self.undo_move_dots()
                             self.redraw_piece(piece_clicked, self.clicks[0])
                             self.clicks.clear()
+                            self.determine_black_king_check(piece_clicked)
+                            #self.determine_white_king_check(piece_clicked)
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
                             self.current_move_list.clear()

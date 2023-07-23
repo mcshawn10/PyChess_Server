@@ -149,8 +149,8 @@ class Piece:
         return self.legal_moves
 class King(Piece):
 
-    def __init__(self, name, color, coordinate):
-        super().__init__(name, color, coordinate)
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
 
     def set_coordinate(self, row: int, col: int):
         super().set_coordinate(row, col)
