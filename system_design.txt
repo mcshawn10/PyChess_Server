@@ -92,3 +92,11 @@ first you have to know whose turn it is:
 
   current way for checking if king in check is quick and cheap 
   Now, have to be able to determine if move puts king in check
+
+  to check if King in checkmate, you can iterate all possible moves of the oppenent, if one of their moves is a move for king, then checkmate
+  however, this is probably not the best way to determine for other king and pawn
+
+  ** the king doesn't necessarily need moves, it can also rely on another piece blocking 
+  so how do you know if a king is still in check?
+  what's the least computationally expensive way to iterate through all pieces? We already have the board that does conatin all pieces
+  but it's a 2D array-> but in some ways this isn't a Bad way to do it considering there are only 64 squares and not every 

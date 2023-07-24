@@ -34,8 +34,8 @@ class Board:
         self.clicks = []
         self.current_move_list = []
 
-        self.BlackKing = None
-        self.WhiteKing = None
+        self.BlackKing = (0,4)
+        self.WhiteKing = (7,4)
 
         
 
