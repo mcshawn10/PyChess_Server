@@ -36,6 +36,7 @@ class Board:
 
         self.BlackKing = (0,4)
         self.WhiteKing = (7,4)
+        self.checkmate = False
 
         
 
@@ -203,12 +204,14 @@ class Board:
                 self.display_king_check(move)
         
 
-    def determine_black_king_check(self, attackingPiece:Piece):
+    def DetermineKingCheck(self, attackingPiece:Piece):
         moves = attackingPiece.get_legal_moves()
         # if king in moves, then king in check
         for move in moves:
             if type(self.board_arr[move[0]][move[1]].get_Piece()) == King:
                 self.display_king_check(move)
+                return True
+        return False
         
         
 
@@ -275,8 +278,27 @@ class Board:
                             self.undo_move_dots()
                             self.redraw_piece(piece_clicked, self.clicks[0])
                             self.clicks.clear()
-                            self.determine_black_king_check(piece_clicked)
-                            #self.determine_white_king_check(piece_clicked)
+                            check = self.DetermineKingCheck(piece_clicked)
+                            if check:
+                                if self.color_to_move == "white": #then determine black's moves
+                                    kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.BlackKing[0]][self.BlackKing[1]])
+                                    if kingCannotGetOutOfCheck:
+                                        for p in self.availableBlackPieces:
+                                            canBlock = PieceCanBlockCheck(piece_clicked, p)
+                                            if canBlock: break
+                                        self.checkmate = True   
+                                                
+                                else: # then determine white's moves
+                                    kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.WhiteKing[0]][self.WhiteKing[1]])
+                                    if kingCannotGetOutOfCheck:
+                                        for p in self.availableWhitePieces:
+                                            canBlock = PieceCanBlockCheck(piece_clicked, p)
+                                            if canBlock: break
+                                        self.checkmate = True 
+                                # determine if king has moves
+                                # determine if piece can block -> here we have to iterate 
+                                # if neither, then checkmate
+                            
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
                             self.current_move_list.clear()

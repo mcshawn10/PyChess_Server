@@ -106,3 +106,12 @@ first you have to know whose turn it is:
   - you need a way to update the member kings positions after you move a king
   bugs:
   - pawn can capture in front of itself 
+  - need to make it so you cannot move a piece unless it can block the check
+
+control flow of piece movement:
+- make a move, check if it puts the king in check
+- if not continue
+- if it does ->
+  - check if the kings has moves, 
+      if it doesnt, iterate through its pieces, and see if one can block the attacking piece
+        if none can, then checkmate

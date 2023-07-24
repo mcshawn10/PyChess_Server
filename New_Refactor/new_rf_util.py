@@ -62,10 +62,12 @@ def GetCheckmate():
     #king has to be in check first, if the king has no moves, and if none of its other pieces have moves that can block, then checkmate
     # if the king has no moves, and neither do any of its other pieces, then its a stalemate
 
-def RemoveCapturedPiece():
+def RemoveCapturedPiece(pieceList:list, newPos:tuple, oldPos:tuple):
     # if you move to square that is inhabited, then you need a way to remove/modify those coordinates
     # so the old position would be removed, and that new position would remain
-    pass
+    pieceList.remove(oldPos)
+    pieceList.append(newPos)
+
 
 if __name__ == "__main__":
     pass
