@@ -149,8 +149,8 @@ class Piece:
         return self.legal_moves
 class King(Piece):
 
-    def __init__(self, name, color, coordinate):
-        super().__init__(name, color, coordinate)
+    def __init__(self, name, color, coordinate, board):
+        super().__init__(name, color, coordinate, board)
 
     def set_coordinate(self, row: int, col: int):
         super().set_coordinate(row, col)
@@ -174,6 +174,13 @@ class King(Piece):
     
     def move_is_legal(self, destination_square: Square):
         return super().move_is_legal(destination_square)
+    
+    def GetTheoreticalMoves(self):
+        possible_moves = [(self.row+1, self.col), (self.row+1, self.col-1), (self.row+1, self.col+1), 
+                          (self.row, self.col+1), (self.row, self.col-1), 
+                          (self.row-1, self.col+1), (self.row-1, self.col), (self.row-1, self.col-1)]
+        
+        return possible_moves
     
 class Queen(Piece):
     def __init__(self, name, color, coordinate, board):

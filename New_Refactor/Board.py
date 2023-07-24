@@ -14,10 +14,11 @@ class Board:
         self.BROWN = (139, 101, 8)
         self.BLUE = (192,192,192)
         self.GREEN = (102,204,0)
+        self.RED = (255,0,0)
         self.rxc = 8  # dimensions of row and columns (9)
-        self.height = 512  # dimensions of the board (constants)
-        self.width = 800
-        self.squares = 512//8  # size of our board squares
+        self.height = 640  # dimensions of the board (constants) 512
+        self.width = 900
+        self.squares = 640//8  # size of our board squares
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
         
         self.colors = [pygame.Color(self.TAN), pygame.Color(self.BROWN)]
@@ -31,8 +32,10 @@ class Board:
 
         self.board_arr = [[Square(True, (y,x)) for x in range(self.rxc)] for y in range(self.rxc)]
         self.clicks = []
+        self.current_move_list = []
 
-        
+        self.BlackKing = (0,4)
+        self.WhiteKing = (7,4)
 
         
 
@@ -48,13 +51,13 @@ class Board:
                 color = self.colors[((row+col) % 2)]
                 pygame.draw.rect(self.screen, color, 
                                  pygame.Rect(col*self.squares, row*self.squares, self.squares, self.squares))
-        pygame.draw.line(self.screen, (0,0,0), (512, 0), (512,512), width=4)     
+        pygame.draw.line(self.screen, (0,0,0), (self.height, 0), (self.height,self.height), width=4)     
 
     def draw_player_turn(self):
-        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((512, 0, self.width-512, self.height )))
+        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((self.height, 0, self.width-self.height, self.height )))
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render(f"{self.color_to_move} to play", True, (0,0,0)) 
-        self.screen.blit(text, (600, 200))
+        self.screen.blit(text, (700, 200))
         
     def set_pieces(self):
         
@@ -83,7 +86,7 @@ class Board:
         self.board_arr[0][2].piece = Bishop('bB', "black", (0,2), self.board_arr)
         self.board_arr[0][5].piece = Bishop('bB', "black", (0,5), self.board_arr)
         self.board_arr[0][3].piece = Queen('bQ', "black", (0,3), self.board_arr)
-        self.board_arr[0][4].piece = Queen('bK', "black", (0,4), self.board_arr)
+        self.board_arr[0][4].piece = King('bK', "black", (0,4), self.board_arr)
 
         self.board_arr[7][0].piece = Rook('wR', "white", (7,0), self.board_arr)
         self.board_arr[7][7].piece = Rook('wR', "white", (7,7), self.board_arr)
@@ -92,10 +95,14 @@ class Board:
         self.board_arr[7][2].piece = Bishop('wB', "white", (7,2), self.board_arr)
         self.board_arr[7][5].piece = Bishop('wB', "white", (7,5), self.board_arr)
         self.board_arr[7][3].piece = Queen('wQ', "white", (7,3), self.board_arr)
-        self.board_arr[7][4].piece = Queen('wK', "white", (7,4), self.board_arr)
-    
+        self.board_arr[7][4].piece = King('wK', "white", (7,4), self.board_arr)
 
-        
+        self.availableBlackPieces = [(i,j) for j in range(8) for i in range(2)]
+
+        self.availableWhitePieces = [(i,j) for j in range(8) for i in range(6,8)]
+
+    def draw_king_check(self):
+        pass    
 
     def draw_pieces(self):
         for row in range(self.rxc):
@@ -112,7 +119,7 @@ class Board:
         pygame.draw.rect(self.screen, color, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
         pygame.display.flip()
 
-    def what_was_clicked(self, row, col):
+    def GetColorClicked(self, row, col):
         
         p = self.board_arr[row][col]
         if p.is_empty:
@@ -135,7 +142,7 @@ class Board:
     def draw_moves(self, moves:list):
         for move in moves:
 
-            pygame.draw.circle(self.screen, self.GREEN, ((move[1]*64)+32, (move[0]*64)+32), 10)
+            pygame.draw.circle(self.screen, self.GREEN, ((move[1]*self.squares)+40, (move[0]*self.squares)+40), 15)
             
     def move_piece(self, old_pos:tuple, next_pos:tuple, piece_selected:Piece):
         piece_selected.set_coordinate(next_pos[0], next_pos[1])
@@ -157,8 +164,54 @@ class Board:
         self.clicks.append((row,col)) 
         self.highlight_square((row, col))
         self.draw_moves(move_list) 
+
+    def undo_move_dots(self):
+        for s in self.current_move_list:
+            color = self.colors[((s[0]+s[1]) % 2)]
+            pygame.draw.rect(self.screen, color, 
+                                pygame.Rect(s[1]*self.squares, s[0]*self.squares, self.squares, self.squares))
+
     
-                        
+    def redraw_piece(self, piece:Piece, old_pos:tuple):
+        old_row,old_col = old_pos[0], old_pos[1]
+        color = self.colors[((old_row+old_col) % 2)]
+
+        pygame.draw.rect(self.screen, color, 
+                                 pygame.Rect(old_col*self.squares, old_row*self.squares, self.squares, self.squares))
+
+        self.screen.blit(self.Pieces[piece.name], pygame.Rect(piece.col*self.squares, piece.row*self.squares,
+                                                      self.squares, self.squares))
+
+        pygame.display.flip()
+
+    def display_king_check(self, pos:tuple):
+        r,c = pos[0],pos[1]
+
+        pygame.draw.rect(self.screen, self.RED, (c*self.squares, r*self.squares, self.squares, self.squares), 5)
+
+        text_font = pygame.font.SysFont("Arial", 30)
+        text = text_font.render(f"{self.color_to_move} King in check!!", True, (0,0,0)) 
+        self.screen.blit(text, (700, 400))
+
+        pygame.display.flip()
+
+    def determine_white_king_check(self, attackingPiece:Piece):
+        moves = attackingPiece.get_legal_moves()
+        # if king in moves, then king in check
+        for move in moves:
+            if type(self.board_arr[move[0]][move[1]].get_Piece()) == King:
+                self.display_king_check(move)
+        
+
+    def determine_black_king_check(self, attackingPiece:Piece):
+        moves = attackingPiece.get_legal_moves()
+        # if king in moves, then king in check
+        for move in moves:
+            if type(self.board_arr[move[0]][move[1]].get_Piece()) == King:
+                self.display_king_check(move)
+        
+        
+
     def RUN(self):
 
         self.draw_board()
@@ -181,7 +234,7 @@ class Board:
                     mouse_pos = pygame.mouse.get_pos()                    
                     row,col = self.get_pos(mouse_pos)
                     
-                    color_clicked = self.what_was_clicked(row,col)
+                    color_clicked = self.GetColorClicked(row,col)
 
 
                     if len(self.clicks)==0 and color_clicked == self.color_to_move:
@@ -189,6 +242,7 @@ class Board:
                         piece_clicked = self.board_arr[row][col].get_Piece()
                         
                         move_list = piece_clicked.get_legal_moves()
+                        self.current_move_list = move_list
                         self.clicks.append((row,col)) 
                         self.highlight_square((row, col))
                         self.draw_moves(move_list)
@@ -203,11 +257,13 @@ class Board:
                                 self.draw_board()
 
                             else:
-                                self.draw_board()
+                                #self.draw_board()
+                                self.undo_move_dots()
                                 self.clicks.clear()
                                 piece_clicked = self.board_arr[row][col].get_Piece()
                         
                                 move_list = piece_clicked.get_legal_moves()
+                                self.current_move_list = move_list
                                 self.clicks.append((row,col)) 
                                 self.highlight_square((row, col))
                                 self.draw_moves(move_list)
@@ -216,10 +272,14 @@ class Board:
                         elif (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)
-                            self.draw_board()
+                            self.undo_move_dots()
+                            self.redraw_piece(piece_clicked, self.clicks[0])
                             self.clicks.clear()
+                            self.determine_black_king_check(piece_clicked)
+                            #self.determine_white_king_check(piece_clicked)
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
+                            self.current_move_list.clear()
 
                     else: continue
                     
