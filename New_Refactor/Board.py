@@ -281,18 +281,20 @@ class Board:
                             check = self.DetermineKingCheck(piece_clicked)
                             if check:
                                 if self.color_to_move == "white": #then determine black's moves
-                                    kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.BlackKing[0]][self.BlackKing[1]])
+                                    kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.BlackKing[0]][self.BlackKing[1]].get_Piece())
                                     if kingCannotGetOutOfCheck:
                                         for p in self.availableBlackPieces:
-                                            canBlock = PieceCanBlockCheck(piece_clicked, p)
+                                            blockingPiece = self.board_arr[p[0]][p[1]].get_Piece()
+                                            canBlock = PieceCanBlockCheck(piece_clicked, blockingPiece)
                                             if canBlock: break
                                         self.checkmate = True   
                                                 
                                 else: # then determine white's moves
-                                    kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.WhiteKing[0]][self.WhiteKing[1]])
+                                    kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.WhiteKing[0]][self.WhiteKing[1]].get_Piece())
                                     if kingCannotGetOutOfCheck:
                                         for p in self.availableWhitePieces:
-                                            canBlock = PieceCanBlockCheck(piece_clicked, p)
+                                            blockingPiece = self.board_arr[p[0]][p[1]].get_Piece()
+                                            canBlock = PieceCanBlockCheck(piece_clicked, blockingPiece)
                                             if canBlock: break
                                         self.checkmate = True 
                                 # determine if king has moves

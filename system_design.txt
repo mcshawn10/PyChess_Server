@@ -115,3 +115,7 @@ control flow of piece movement:
   - check if the kings has moves, 
       if it doesnt, iterate through its pieces, and see if one can block the attacking piece
         if none can, then checkmate
+
+
+
+for the NEXT REFACTOR: do away with the whole square thing? not sure it has done a whole lot of good
