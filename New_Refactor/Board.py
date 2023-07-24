@@ -157,6 +157,13 @@ class Board:
         self.board_arr[next_pos[0]][next_pos[1]].is_empty = False
         self.board_arr[next_pos[0]][next_pos[1]].piece.set_coordinate(next_pos[0], next_pos[1])
 
+        if self.color_to_move == "white":
+            self.availableWhitePieces.remove(old_pos)
+            self.availableWhitePieces.append(next_pos)
+        else: 
+            self.availableBlackPieces.remove(old_pos)
+            self.availableBlackPieces.append(next_pos) # how to handle if a piece gets captured?
+
     def get_piece_clicked(self, row, col ):
         self.draw_board()
         piece_clicked = self.board_arr[row][col].get_Piece()
