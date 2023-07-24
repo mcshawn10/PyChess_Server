@@ -96,7 +96,10 @@ class Board:
         self.board_arr[7][5].piece = Bishop('wB', "white", (7,5), self.board_arr)
         self.board_arr[7][3].piece = Queen('wQ', "white", (7,3), self.board_arr)
         self.board_arr[7][4].piece = King('wK', "white", (7,4), self.board_arr)
-    
+
+        self.availableBlackPieces = [(i,j) for j in range(8) for i in range(2)]
+
+        self.availableWhitePieces = [(i,j) for j in range(8) for i in range(6,8)]
 
     def draw_king_check(self):
         pass    

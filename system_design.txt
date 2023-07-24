@@ -100,3 +100,9 @@ first you have to know whose turn it is:
   so how do you know if a king is still in check?
   what's the least computationally expensive way to iterate through all pieces? We already have the board that does conatin all pieces
   but it's a 2D array-> but in some ways this isn't a Bad way to do it considering there are only 64 squares and not every 
+
+  need to be able to keep track of where all these pieces are, outside of the board_array
+  - you especially need to keep track of the kings positions
+  - you need a way to update the member kings positions after you move a king
+  bugs:
+  - pawn can capture in front of itself 
