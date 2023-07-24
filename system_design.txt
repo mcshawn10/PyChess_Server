@@ -116,6 +116,8 @@ control flow of piece movement:
       if it doesnt, iterate through its pieces, and see if one can block the attacking piece
         if none can, then checkmate
 
+# if the square you are moving to is inhabited, then remove that one from their list, and update your own list
+
 
 
 for the NEXT REFACTOR: do away with the whole square thing? not sure it has done a whole lot of good

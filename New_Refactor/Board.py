@@ -147,6 +147,11 @@ class Board:
             
     def move_piece(self, old_pos:tuple, next_pos:tuple, piece_selected:Piece):
         piece_selected.set_coordinate(next_pos[0], next_pos[1])
+        if not self.board_arr[next_pos[0]][next_pos[1]].is_empty:
+            if self.color_to_move == "white":
+                self.availableBlackPieces.remove(next_pos)
+            else: self.availableWhitePieces.remove(next_pos)
+            
         # you want to stop blitting on the current square
         # blit to the new square
         # old square is empty
@@ -286,6 +291,7 @@ class Board:
                             self.redraw_piece(piece_clicked, self.clicks[0])
                             self.clicks.clear()
                             check = self.DetermineKingCheck(piece_clicked)
+
                             if check:
                                 if self.color_to_move == "white": #then determine black's moves
                                     kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.BlackKing[0]][self.BlackKing[1]].get_Piece())
@@ -307,7 +313,8 @@ class Board:
                                 # determine if king has moves
                                 # determine if piece can block -> here we have to iterate 
                                 # if neither, then checkmate
-                            
+                            print(f"available white: {self.availableWhitePieces} \n")
+                            print(f"available black: {self.availableBlackPieces} \n")
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
                             self.current_move_list.clear()
