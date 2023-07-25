@@ -37,6 +37,11 @@ class Board:
         self.BlackKing = (0,4)
         self.WhiteKing = (7,4)
         self.checkmate = False
+        self.WhiteInCheck = False
+        self.BlackInCheck = False
+        self.blackBlockingPieces = None
+        self.whiteBlockingPieces = None
+        
 
         
 
@@ -239,6 +244,7 @@ class Board:
 
         while True:
             # game loop
+            if self.checkmate: break
             self.draw_pieces()
             self.draw_player_turn() 
             for event in pygame.event.get():
@@ -251,10 +257,17 @@ class Board:
                     
                     color_clicked = self.GetColorClicked(row,col)
 
+                    piece_clicked = self.board_arr[row][col].get_Piece()
+                    
+                    if len(self.clicks) == 0 and color_clicked == self.color_to_move:
+                        if self.color_to_move == "black" and self.BlackInCheck:
+                            if piece_clicked not in self.blackBlockingPieces:
+                                continue # need to modify what piece clicked in blockingPieces look like
+                        if self.color_to_move == "white" and self.WhiteInCheck:
+                            if piece_clicked not in self.whiteBlockingPieces:
+                                continue
 
-                    if len(self.clicks)==0 and color_clicked == self.color_to_move:
-                        
-                        piece_clicked = self.board_arr[row][col].get_Piece()
+                        #piece_clicked = self.board_arr[row][col].get_Piece()
                         
                         move_list = piece_clicked.get_legal_moves()
                         self.current_move_list = move_list
@@ -291,30 +304,21 @@ class Board:
                             self.redraw_piece(piece_clicked, self.clicks[0])
                             self.clicks.clear()
                             check = self.DetermineKingCheck(piece_clicked)
-
+                            # probably need to determine what color is in check
                             if check:
                                 if self.color_to_move == "white": #then determine black's moves
                                     kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.BlackKing[0]][self.BlackKing[1]].get_Piece())
                                     if kingCannotGetOutOfCheck:
-                                        for p in self.availableBlackPieces:
-                                            blockingPiece = self.board_arr[p[0]][p[1]].get_Piece()
-                                            canBlock = PieceCanBlockCheck(piece_clicked, blockingPiece)
-                                            if canBlock: break
-                                        self.checkmate = True   
-                                                
+                                        self.blackBlockingPieces = createListOfBlockingPieces(piece_clicked, self.availableBlackPieces)
+                                        if not self.blackBlockingPieces: self.checkmate = True
+                                                          
                                 else: # then determine white's moves
                                     kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.WhiteKing[0]][self.WhiteKing[1]].get_Piece())
                                     if kingCannotGetOutOfCheck:
-                                        for p in self.availableWhitePieces:
-                                            blockingPiece = self.board_arr[p[0]][p[1]].get_Piece()
-                                            canBlock = PieceCanBlockCheck(piece_clicked, blockingPiece)
-                                            if canBlock: break
-                                        self.checkmate = True 
-                                # determine if king has moves
-                                # determine if piece can block -> here we have to iterate 
-                                # if neither, then checkmate
-                            print(f"available white: {self.availableWhitePieces} \n")
-                            print(f"available black: {self.availableBlackPieces} \n")
+                                        self.whiteBlockingPieces = createListOfBlockingPieces(piece_clicked, self.availableWhitePieces)
+                                        if not self.whiteBlockingPieces: self.checkmate = True
+                                
+                            
                             self.color_to_move = get_opposite_color(self.color_to_move)
                             self.board_arr[row][col].color = piece_clicked.color
                             self.current_move_list.clear()

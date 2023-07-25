@@ -39,7 +39,20 @@ def GetKingCannotGetOutOfCheck(checkingPiece, kingInCheck):
     isSubset = kingMoves <= attackingMoves
 
     return isSubset
+def createListOfBlockingPieces(checkingPiece, pieceList, b):
+    retList = []
+    attackingMoves = set(checkingPiece.get_legal_moves())
+    for blockingPiece in pieceList:
+        blockingPiece = b[blockingPiece[0]][blockingPiece[1]]
+        blockingMoves = set(blockingPiece.get_legal_moves())
+        sharedMoves = attackingMoves.intersection(blockingMoves)
+        if sharedMoves: retList.append((blockingPiece))
+    
 
+    return retList
+
+    # return whether the piece can block check, but in the scheme of iterating all pieces, how would we call this?
+    return sharedMoves is True
 def PieceCanBlockCheck(checkingPiece, blockingPiece):
     attackingMoves = set(checkingPiece.get_legal_moves())
     blockingMoves = set(blockingPiece.get_legal_moves())

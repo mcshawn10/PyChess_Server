@@ -121,3 +121,7 @@ control flow of piece movement:
 
 
 for the NEXT REFACTOR: do away with the whole square thing? not sure it has done a whole lot of good
+
+there needs to be a control flow for when black/white is in check:
+- can only choose to move pieces from the given list
+probably a boolean that says black/white is in check
