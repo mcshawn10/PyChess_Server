@@ -257,17 +257,17 @@ class Board:
                     
                     color_clicked = self.GetColorClicked(row,col)
 
-                    piece_clicked = self.board_arr[row][col].get_Piece()
+                    #piece_clicked = self.board_arr[row][col].get_Piece()
                     
                     if len(self.clicks) == 0 and color_clicked == self.color_to_move:
                         if self.color_to_move == "black" and self.BlackInCheck:
-                            if piece_clicked not in self.blackBlockingPieces:
+                            if (row,col) not in self.blackBlockingPieces:
                                 continue # need to modify what piece clicked in blockingPieces look like
                         if self.color_to_move == "white" and self.WhiteInCheck:
-                            if piece_clicked not in self.whiteBlockingPieces:
+                            if (row,col) not in self.whiteBlockingPieces:
                                 continue
 
-                        #piece_clicked = self.board_arr[row][col].get_Piece()
+                        piece_clicked = self.board_arr[row][col].get_Piece()
                         
                         move_list = piece_clicked.get_legal_moves()
                         self.current_move_list = move_list
