@@ -261,6 +261,8 @@ class Board:
                     
                     if len(self.clicks) == 0 and color_clicked == self.color_to_move:
                         if self.color_to_move == "black" and self.BlackInCheck:
+                            print("black in check \n")
+                            print(self.blackBlockingPieces)
                             if (row,col) not in self.blackBlockingPieces:
                                 continue # need to modify what piece clicked in blockingPieces look like
                         if self.color_to_move == "white" and self.WhiteInCheck:
@@ -306,13 +308,15 @@ class Board:
                             check = self.DetermineKingCheck(piece_clicked)
                             # probably need to determine what color is in check
                             if check:
-                                if self.color_to_move == "white": #then determine black's moves
+                                if self.color_to_move == "white":
+                                    self.BlackInCheck = True #then determine black's moves
                                     kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.BlackKing[0]][self.BlackKing[1]].get_Piece())
                                     if kingCannotGetOutOfCheck:
-                                        self.blackBlockingPieces = createListOfBlockingPieces(piece_clicked, self.availableBlackPieces)
+                                        self.blackBlockingPieces = createListOfBlockingPieces(piece_clicked, self.availableBlackPieces, self.board_arr)
                                         if not self.blackBlockingPieces: self.checkmate = True
                                                           
                                 else: # then determine white's moves
+                                    self.WhiteInCheck = True
                                     kingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.WhiteKing[0]][self.WhiteKing[1]].get_Piece())
                                     if kingCannotGetOutOfCheck:
                                         self.whiteBlockingPieces = createListOfBlockingPieces(piece_clicked, self.availableWhitePieces)
