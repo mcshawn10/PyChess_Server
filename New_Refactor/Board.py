@@ -260,46 +260,46 @@ class Board:
                     #piece_clicked = self.board_arr[row][col].get_Piece()
                     
                     if len(self.clicks) == 0 and color_clicked == self.color_to_move:
+                        
                         if self.color_to_move == "black" and self.BlackInCheck:
                             print("black in check \n")
                             print(self.blackBlockingPieces)
                             if (row,col) not in self.blackBlockingPieces:
                                 continue # need to modify what piece clicked in blockingPieces look like
-                        if self.color_to_move == "white" and self.WhiteInCheck:
-                            if (row,col) not in self.whiteBlockingPieces:
-                                continue
-
-                        piece_clicked = self.board_arr[row][col].get_Piece()
-                        
-                        move_list = piece_clicked.get_legal_moves()
-                        self.current_move_list = move_list
-                        self.clicks.append((row,col)) 
-                        self.highlight_square((row, col))
-                        self.draw_moves(move_list)
-                        
-                        
-
-                    elif len(self.clicks) == 1:
-
-                        if color_clicked == self.color_to_move:
-                            self.undo_highlight(self.clicks[0]) # did you click the same piece or a new piece
-                            if (row, col) in self.clicks: # if you clicked the same guy
-                                self.draw_board()
 
                             else:
-                                #self.draw_board()
-                                self.undo_move_dots()
-                                self.clicks.clear()
                                 piece_clicked = self.board_arr[row][col].get_Piece()
-                        
+                            
                                 move_list = piece_clicked.get_legal_moves()
                                 self.current_move_list = move_list
                                 self.clicks.append((row,col)) 
                                 self.highlight_square((row, col))
                                 self.draw_moves(move_list)
-                                # highlight the new piece
-                                # draw the new moves
-                        elif (row,col) in move_list:
+                        elif self.color_to_move == "white" and self.WhiteInCheck:
+                            if (row,col) not in self.whiteBlockingPieces:
+                                continue
+                            else:
+                                piece_clicked = self.board_arr[row][col].get_Piece()
+                            
+                                move_list = piece_clicked.get_legal_moves()
+                                self.current_move_list = move_list
+                                self.clicks.append((row,col)) 
+                                self.highlight_square((row, col))
+                                self.draw_moves(move_list)
+                        else:
+                            piece_clicked = self.board_arr[row][col].get_Piece()
+                            
+                            move_list = piece_clicked.get_legal_moves()
+                            self.current_move_list = move_list
+                            self.clicks.append((row,col)) 
+                            self.highlight_square((row, col))
+                            self.draw_moves(move_list)
+                        
+                        
+
+                    elif len(self.clicks) == 1:
+                        
+                        if (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)
                             self.undo_move_dots()
@@ -327,6 +327,65 @@ class Board:
                             self.board_arr[row][col].color = piece_clicked.color
                             self.current_move_list.clear()
 
+                        elif self.color_to_move == "black" and self.BlackInCheck:
+                            if (row,col) not in self.blackBlockingPieces or (row,col) not in move_list:
+                                continue 
+                            elif (row,col) in self.blackBlockingPieces:
+                                if (row, col) in self.clicks: # if you clicked the same guy
+                                    self.draw_board()
+                                
+                                else:
+                                    #self.draw_board()
+                                    self.undo_move_dots()
+                                    self.clicks.clear()
+                                    piece_clicked = self.board_arr[row][col].get_Piece()
+                            
+                                    move_list = piece_clicked.get_legal_moves()
+                                    self.current_move_list = move_list
+                                    self.clicks.append((row,col)) 
+                                    self.highlight_square((row, col))
+                                    self.draw_moves(move_list)
+                            
+
+                        elif self.color_to_move == "white" and self.WhiteInCheck or (row,col) not in move_list:
+                            if (row,col) not in self.whiteBlockingPieces:
+                                continue
+                            elif (row,col) in self.whiteBlockingPieces:
+                                if (row, col) in self.clicks: # if you clicked the same guy
+                                    self.draw_board()
+                                
+                                else:
+                                    #self.draw_board()
+                                    self.undo_move_dots()
+                                    self.clicks.clear()
+                                    piece_clicked = self.board_arr[row][col].get_Piece()
+                            
+                                    move_list = piece_clicked.get_legal_moves()
+                                    self.current_move_list = move_list
+                                    self.clicks.append((row,col)) 
+                                    self.highlight_square((row, col))
+                                    self.draw_moves(move_list)
+
+                        elif color_clicked == self.color_to_move:
+                            self.undo_highlight(self.clicks[0]) # did you click the same piece or a new piece
+                            if (row, col) in self.clicks: # if you clicked the same guy
+                                self.draw_board()
+                                
+                            else:
+                                #self.draw_board()
+                                self.undo_move_dots()
+                                self.clicks.clear()
+                                piece_clicked = self.board_arr[row][col].get_Piece()
+                        
+                                move_list = piece_clicked.get_legal_moves()
+                                self.current_move_list = move_list
+                                self.clicks.append((row,col)) 
+                                self.highlight_square((row, col))
+                                self.draw_moves(move_list)
+                                # highlight the new piece
+                                # draw the new moves
+                        
+
                     else: continue
                     
 
@@ -334,4 +393,4 @@ class Board:
             pygame.display.flip()
 
 if __name__ == "__main__":
-    pass
+    pass    
