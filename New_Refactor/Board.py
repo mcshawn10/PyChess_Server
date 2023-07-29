@@ -262,8 +262,8 @@ class Board:
                     if len(self.clicks) == 0 and color_clicked == self.color_to_move:
                         
                         if self.color_to_move == "black" and self.BlackInCheck:
-                            print("black in check \n")
-                            print(self.blackBlockingPieces)
+                            
+                            
                             if (row,col) not in self.blackBlockingPieces:
                                 continue # need to modify what piece clicked in blockingPieces look like
 
@@ -305,7 +305,7 @@ class Board:
                             turn is white and white in check
                             is there a way to not have to repeat logic? -> mapping functions?
                             dont forget the ability to change piece selection'''
-                        print("reaches first")
+                        
                         if (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)
@@ -335,7 +335,9 @@ class Board:
                             self.current_move_list.clear()
 
                         elif self.color_to_move == "black" and self.BlackInCheck:
-                            if (row,col) not in self.blackBlockingPieces or (row,col) not in move_list:
+                            print("reaches")
+                            if (row,col) not in self.blackBlockingPieces:
+                                print("continued")
                                 continue 
                             elif (row,col) in self.blackBlockingPieces:
                                 
@@ -343,8 +345,9 @@ class Board:
                                     self.draw_board()
                                 
                                 else:
-                                    print("reaches")
+                                    
                                     #self.draw_board()
+                                    self.undo_highlight((self.clicks[0]))
                                     self.undo_move_dots()
                                     self.clicks.clear()
                                     piece_clicked = self.board_arr[row][col].get_Piece()
@@ -368,6 +371,7 @@ class Board:
                                 
                                 else:
                                     #self.draw_board()
+                                    self.undo_highlight((self.clicks[0]))
                                     self.undo_move_dots()
                                     self.clicks.clear()
                                     piece_clicked = self.board_arr[row][col].get_Piece()
@@ -398,7 +402,10 @@ class Board:
                                 # draw the new moves
                         
 
-                    else: continue
+                    else: 
+                        #print("continued")
+                        continue
+                        
                     
             
             clock.tick(60)  # clock running at 60 FPS
