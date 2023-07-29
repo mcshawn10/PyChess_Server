@@ -297,8 +297,15 @@ class Board:
                         
                         
 
-                    elif len(self.clicks) == 1:
-                        
+                    elif len(self.clicks) == 1: # need to rewrite all of this, starting with a base case
+                        # cases: 
+                        '''turn is black and black not in check
+                            turn is black and black in check
+                            turn is white and white not in check
+                            turn is white and white in check
+                            is there a way to not have to repeat logic? -> mapping functions?
+                            dont forget the ability to change piece selection'''
+                        print("reaches first")
                         if (row,col) in move_list:
                             
                             self.move_piece(self.clicks[0], (row,col), piece_clicked)
@@ -331,10 +338,12 @@ class Board:
                             if (row,col) not in self.blackBlockingPieces or (row,col) not in move_list:
                                 continue 
                             elif (row,col) in self.blackBlockingPieces:
+                                
                                 if (row, col) in self.clicks: # if you clicked the same guy
                                     self.draw_board()
                                 
                                 else:
+                                    print("reaches")
                                     #self.draw_board()
                                     self.undo_move_dots()
                                     self.clicks.clear()
@@ -346,8 +355,11 @@ class Board:
                                     self.highlight_square((row, col))
                                     self.draw_moves(move_list)
                             
+                        elif self.color_to_move == "black" and not self.BlackInCheck: pass
 
-                        elif self.color_to_move == "white" and self.WhiteInCheck or (row,col) not in move_list:
+                        elif self.color_to_move == "white" and not self.WhiteInCheck: pass
+
+                        elif self.color_to_move == "white" and self.WhiteInCheck:
                             if (row,col) not in self.whiteBlockingPieces:
                                 continue
                             elif (row,col) in self.whiteBlockingPieces:
@@ -388,7 +400,7 @@ class Board:
 
                     else: continue
                     
-
+            
             clock.tick(60)  # clock running at 60 FPS
             pygame.display.flip()
 
