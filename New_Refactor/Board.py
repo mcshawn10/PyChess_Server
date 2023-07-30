@@ -60,7 +60,7 @@ class Board:
         pygame.draw.line(self.screen, (0,0,0), (self.height, 0), (self.height,self.height), width=4)     
 
     def draw_player_turn(self):
-        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((self.height, 0, self.width-self.height, self.height )))
+        pygame.draw.rect(self.screen, self.TAN, pygame.Rect((self.height, 0, self.width-self.height, (self.height//2) )))
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render(f"{self.color_to_move} to play", True, (0,0,0)) 
         self.screen.blit(text, (700, 200))
@@ -205,11 +205,11 @@ class Board:
     def display_king_check(self, pos:tuple):
         r,c = pos[0],pos[1]
 
-        pygame.draw.rect(self.screen, self.RED, (c*self.squares, r*self.squares, self.squares, self.squares), 5)
+        pygame.draw.rect(self.screen, self.RED, (c*self.squares, r*self.squares, self.squares, self.squares), 3)
 
         text_font = pygame.font.SysFont("Arial", 30)
         text = text_font.render(f"{self.color_to_move} King in check!!", True, (0,0,0)) 
-        self.screen.blit(text, (700, 400))
+        self.screen.blit(text, (650, 400))
 
         pygame.display.flip()
 
@@ -335,9 +335,9 @@ class Board:
                             self.current_move_list.clear()
 
                         elif self.color_to_move == "black" and self.BlackInCheck:
-                            print("reaches")
+                            
                             if (row,col) not in self.blackBlockingPieces:
-                                print("continued")
+                                
                                 continue 
                             elif (row,col) in self.blackBlockingPieces:
                                 
@@ -357,6 +357,7 @@ class Board:
                                     self.clicks.append((row,col)) 
                                     self.highlight_square((row, col))
                                     self.draw_moves(move_list)
+                                    self.undo_highlight(self.BlackKing)
                             
                         elif self.color_to_move == "black" and not self.BlackInCheck: pass
 
@@ -381,6 +382,7 @@ class Board:
                                     self.clicks.append((row,col)) 
                                     self.highlight_square((row, col))
                                     self.draw_moves(move_list)
+                                    self.undo_highlight(self.WhiteKing)
 
                         elif color_clicked == self.color_to_move:
                             self.undo_highlight(self.clicks[0]) # did you click the same piece or a new piece
