@@ -228,7 +228,21 @@ class Board:
                 return True
         return False
         
-        
+    def MovePieceAndUpdateBoard(self, row, col, piece_clicked):
+        self.move_piece(self.clicks[0], (row,col), piece_clicked)
+        self.undo_move_dots()
+        self.redraw_piece(piece_clicked, self.clicks[0])
+        check = self.DetermineKingCheck(piece_clicked)
+        if check:
+            self.WhiteInCheck = True
+            whiteKingCannotGetOutOfCheck = GetKingCannotGetOutOfCheck(piece_clicked, self.board_arr[self.WhiteKing[0]][self.WhiteKing[1]].get_Piece())
+            if whiteKingCannotGetOutOfCheck:
+                self.whiteBlockingPieces = createListOfBlockingPieces(piece_clicked, self.availableWhitePieces)
+                if not self.whiteBlockingPieces: self.checkmate = True
+        self.clicks.clear()
+        self.color_to_move = get_opposite_color(self.color_to_move)
+        self.board_arr[row][col].color = piece_clicked.color
+        self.current_move_list.clear()   
 
     def RUN(self):
 
@@ -299,7 +313,12 @@ class Board:
                         # you have to determine if white or black in check first before you hit the control flow
                         
                         if self.color_to_move == "black" and self.BlackInCheck:
-                            
+                            if (row, col) not in move_list:
+                                continue
+                            elif (row,col) in move_list:
+                                self.move_piece(self.clicks[0], (row,col), piece_clicked)
+                                self.undo_move_dots()
+                                self.redraw_piece(piece_clicked, self.clicks[0])
                             if (row,col) not in self.blackBlockingPieces:
                                 
                                 continue 
@@ -307,7 +326,7 @@ class Board:
                                 
                                 if (row, col) in self.clicks: # if you clicked the same guy
                                     self.draw_board()
-                                
+                                # what if you clicked a new piece? 
                                 else:
                                     
                                     #self.draw_board()
@@ -322,8 +341,8 @@ class Board:
                                     self.highlight_square((row, col))
                                     self.draw_moves(move_list)
                                     self.undo_highlight(self.BlackKing)
-                                    self.BlackInCheck = False
-                                    print("reaches")
+                                    #self.BlackInCheck = False
+                                    
                             
                         elif self.color_to_move == "black" and not self.BlackInCheck:
                             if color_clicked == self.color_to_move:
@@ -345,6 +364,7 @@ class Board:
                                     # highlight the new piece
                                     # draw the new moves
                             else:
+                                #self.MovePieceAndUpdateBoard(row, col, piece_clicked)
                                 # crashes when you try to select a new piece to move
                                 self.move_piece(self.clicks[0], (row,col), piece_clicked)
                                 self.undo_move_dots()
