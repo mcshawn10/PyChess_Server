@@ -39,7 +39,20 @@ def GetKingCannotGetOutOfCheck(checkingPiece, kingInCheck):
     isSubset = kingMoves <= attackingMoves
 
     return isSubset
+def createListOfBlockingPieces(checkingPiece, pieceList, b):
+    retList = []
+    attackingMoves = set(checkingPiece.get_legal_moves())
+    for blockingPiece in pieceList:
+        p = b[blockingPiece[0]][blockingPiece[1]].get_Piece()
+        blockingMoves = set(p.get_legal_moves())
+        sharedMoves = attackingMoves.intersection(blockingMoves)
+        if sharedMoves: retList.append((blockingPiece))
+    
 
+    return retList
+
+    # return whether the piece can block check, but in the scheme of iterating all pieces, how would we call this?
+    return sharedMoves is True
 def PieceCanBlockCheck(checkingPiece, blockingPiece):
     attackingMoves = set(checkingPiece.get_legal_moves())
     blockingMoves = set(blockingPiece.get_legal_moves())
@@ -62,10 +75,12 @@ def GetCheckmate():
     #king has to be in check first, if the king has no moves, and if none of its other pieces have moves that can block, then checkmate
     # if the king has no moves, and neither do any of its other pieces, then its a stalemate
 
-def RemoveCapturedPiece():
+def RemoveCapturedPiece(pieceList:list, newPos:tuple, oldPos:tuple):
     # if you move to square that is inhabited, then you need a way to remove/modify those coordinates
     # so the old position would be removed, and that new position would remain
-    pass
+    pieceList.remove(oldPos)
+    pieceList.append(newPos)
+
 
 if __name__ == "__main__":
     pass
