@@ -313,17 +313,20 @@ class Board:
                         # you have to determine if white or black in check first before you hit the control flow
                         
                         if self.color_to_move == "black" and self.BlackInCheck:
-                            if (row, col) not in move_list:
+                            print(self.clicks, "\n")
+                            print(self.blackBlockingPieces)
+                            if (row, col) not in move_list and (row,col) not in self.blackBlockingPieces:
+                                print("continued from not in move list")
                                 continue
                             elif (row,col) in move_list:
                                 self.move_piece(self.clicks[0], (row,col), piece_clicked)
                                 self.undo_move_dots()
                                 self.redraw_piece(piece_clicked, self.clicks[0])
-                            if (row,col) not in self.blackBlockingPieces:
-                                
+                            elif (row,col) not in self.blackBlockingPieces:
+                                print("continued from not in blocking")
                                 continue 
                             elif (row,col) in self.blackBlockingPieces:
-                                
+                                print("hits")
                                 if (row, col) in self.clicks: # if you clicked the same guy
                                     self.draw_board()
                                 # what if you clicked a new piece? 
