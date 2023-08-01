@@ -117,6 +117,7 @@ class Board:
                 elif piece.name != '.':
                     self.screen.blit(self.Pieces[piece.name], pygame.Rect(col*self.squares, row*self.squares,
                                                       self.squares, self.squares))
+                    
     def undo_highlight(self, pos):
         r,c = pos[0],pos[1]
         color = self.colors[((r+c) % 2)]
@@ -244,6 +245,10 @@ class Board:
         self.board_arr[row][col].color = piece_clicked.color
         self.current_move_list.clear()   
 
+    def UndoCheckText(self, clr ):
+        text_font = pygame.font.SysFont("Arial", 30)
+        text = text_font.render(f"{clr} King in check!!", True, self.TAN) 
+        self.screen.blit(text, (650, 400))
     def RUN(self):
 
         self.draw_board()
@@ -313,20 +318,22 @@ class Board:
                         # you have to determine if white or black in check first before you hit the control flow
                         
                         if self.color_to_move == "black" and self.BlackInCheck:
-                            print(self.clicks, "\n")
-                            print(self.blackBlockingPieces)
+                            
                             if (row, col) not in move_list and (row,col) not in self.blackBlockingPieces:
-                                print("continued from not in move list")
+                                
                                 continue
                             elif (row,col) in move_list:
                                 self.move_piece(self.clicks[0], (row,col), piece_clicked)
                                 self.undo_move_dots()
                                 self.redraw_piece(piece_clicked, self.clicks[0])
+                                self.undo_highlight(self.BlackKing)
+                                self.UndoCheckText("Black")
+
                             elif (row,col) not in self.blackBlockingPieces:
-                                print("continued from not in blocking")
+                                
                                 continue 
                             elif (row,col) in self.blackBlockingPieces:
-                                print("hits")
+                                
                                 if (row, col) in self.clicks: # if you clicked the same guy
                                     self.draw_board()
                                 # what if you clicked a new piece? 
@@ -343,8 +350,8 @@ class Board:
                                     self.clicks.append((row,col)) 
                                     self.highlight_square((row, col))
                                     self.draw_moves(move_list)
-                                    self.undo_highlight(self.BlackKing)
-                                    #self.BlackInCheck = False
+                                    print(self.BlackInCheck)
+                                    
                                     
                             
                         elif self.color_to_move == "black" and not self.BlackInCheck:
@@ -422,9 +429,12 @@ class Board:
 
                         elif self.color_to_move == "white" and self.WhiteInCheck:
                             
-                            
-                            if (row,col) not in self.whiteBlockingPieces:
+                            if (row,col) not in self.whiteBlockingPieces and (row,col) not in move_list:
                                 continue
+                            elif (row,col) in move_list:
+                                self.move_piece(self.clicks[0], (row,col), piece_clicked)
+                                self.undo_move_dots()
+                                self.redraw_piece(piece_clicked, self.clicks[0])
                             elif (row,col) in self.whiteBlockingPieces:
                                 if (row, col) in self.clicks: # if you clicked the same guy
                                     self.draw_board()
